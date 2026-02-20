@@ -1,5 +1,48 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  width: 600px;
+  min-height: 400px;
+  font-family: "Outfit", sans-serif;
+  background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  padding: 24px;
+}
+
 h1 {
-    color: rgb(30, 30, 80);
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 28px;
+  margin-bottom: 8px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+h1:first-of-type {
+  color: #ff6b35;
+  font-size: 32px;
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+
+h3 {
+  color: #ffffff;
+  font-family: "Outfit", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .postFont {
@@ -7,5 +50,48 @@ h1 {
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+  font-size: 16px;
+  line-height: 1.6;
+  color: #f8fafc;
+}
+
+.panel {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border: 2px solid rgba(255, 107, 53, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.panel h3 {
+  color: #1e3a8a;
+  margin-bottom: 16px;
+}
+
+.panel p {
+  color: #1e293b;
+  font-size: 16px;
+  line-height: 1.7;
+  margin-bottom: 12px;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+.panel .postFont {
+  color: #1e293b;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+div.postFont {
+  color: #ffffff;
+  font-size: 18px;
+  padding: 16px;
+  text-align: center;
+  background: rgba(255, 107, 53, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 107, 53, 0.4);
 }
 

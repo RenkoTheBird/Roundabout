@@ -7,6 +7,10 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+src/public/.env
+src/public/datasets
+src/public/models
+
 node_modules
 dist
 dist-ssr

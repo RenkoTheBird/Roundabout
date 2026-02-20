@@ -1,0 +1,1 @@
+// Search Brave API for given claim
