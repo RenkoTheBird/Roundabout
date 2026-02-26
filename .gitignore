@@ -8,15 +8,19 @@ pnpm-debug.log*
 lerna-debug.log*
 
 src/public/.env
-src/public/datasets
 src/public/models
+src/public/datasets/Reviews.csv
+src/public/datasets/verifiableClaims.jsonl
 
 node_modules
 dist
 dist-ssr
 *.local
 
+claim_encodings.npz
+
 # Editor directories and files
+.vscode
 .vscode/*
 !.vscode/extensions.json
 .idea

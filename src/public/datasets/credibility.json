@@ -1,0 +1,2540 @@
+{
+    "theguardian.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -8.14,
+                "credibility": 40.14
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 1.8
+                }
+            },
+        "name": "The Guardian"
+    },
+    "nbcnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -5.49,
+                "credibility": 42.83
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 1.0
+                }
+            },
+        "name": "NBC News"
+    },
+    "nytimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -8.03,
+                "credibility": 40.95
+                },
+            "MediaBiasFactCheck": {
+                "bias": -4.1,
+                "credibility": 1.4
+                }
+            },
+        "name": "The New York Times"
+    },
+    "time.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.37,
+                "credibility": 41.10
+                },
+            "MediaBiasFactCheck": {
+                "bias": -4.0,
+                "credibility": 1.2
+                }
+            },
+        "name": "Time Magazine"
+    },
+    "americanindependent.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -14.61,
+                "credibility": 38.38
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.0,
+                "credibility": 5.0
+                }
+            },
+        "name": "The American Independent"
+    },
+    "advocate.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -12.43,
+                "credibility": 39.45
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.0,
+                "credibility": 1.4
+                }
+            },
+        "name": "The Advocate Magazine"
+    },
+    "newyorker.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -12.48,
+                "credibility": 40.85
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.5,
+                "credibility": 1.4
+                }
+            },
+        "name": "The New Yorker"
+    },
+    "thegrio.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -10.82,
+                "credibility": 39.55
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "The Grio"
+    },
+    "vogue.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -10.91,
+                "credibility": 39.13
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Vogue"
+    },
+    "theweek.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 38.39,
+                "credibility": -10.69
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.2,
+                "credibility": 1.7
+                }
+            },
+        "name": "The Week"
+    },
+    "huffpost.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -10.68,
+                "credibility": 38.04
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.4,
+                "credibility": 3.6
+                }
+            },
+        "name": "The Huffington Post"
+    },
+    "vox.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -9.97,
+                "credibility": 39.62
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.4,
+                "credibility": 1.9
+                }
+            },
+        "name": "Vox"
+    },
+    "theatlantic.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -9.38,
+                "credibility": 38.00
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.3,
+                "credibility": 1.0
+                }
+            },
+        "name": "The Atlantic"
+    },
+    "miamiherald.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -8.01,
+                "credibility": 39.10
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.4,
+                "credibility": 1.0
+                }
+            },
+        "name": "Miami Herald"
+    },
+    "bostonglobe.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.85,
+                "credibility": 41.94
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.2,
+                "credibility": 1.0
+                }
+            },
+        "name": "Boston Globe"
+    },
+    "propublica.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.82,
+                "credibility": 47.22
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.1,
+                "credibility": 0.8
+                }
+            },
+        "name": "ProPublica"
+    },
+    "themarshallproject.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.76,
+                "credibility": 45.76
+                },
+            "MediaBiasFactCheck": {
+                "bias": -0.6,
+                "credibility": 1.0
+                }
+            },
+        "name": "The Marshall Project"
+    },
+    "foreignaffairs.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.11,
+                "credibility": 43.58
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.3,
+                "credibility": 1.0
+                }
+            },
+        "name": "Foreign Affairs"
+    },
+    "poynter.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.32,
+                "credibility": 41.75
+                },
+            "MediaBiasFactCheck": {
+                "bias": -1.7,
+                "credibility": 0.8
+                }
+            },
+        "name": "Poynter"
+    },
+    "aljazeera.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.28,
+                "credibility": 41.30
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.2,
+                "credibility": 4.7
+                }
+            },
+        "name": "Al Jazeera"
+    },
+    "forward.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.37,
+                "credibility": 40.45
+                },
+            "MediaBiasFactCheck": {
+                "bias": -1.6,
+                "credibility": 1.4
+                }
+            },
+        "name": "The Forward"
+    },
+    "washingtonpost.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.06,
+                "credibility": 38.68
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 2.1
+                }
+            },
+        "name": "The Washington Post"
+    },
+    "independent.co.uk": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.91,
+                "credibility": 38.49
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 5.8
+                }
+            },
+        "name": "The Independent"
+    },
+    "theverge.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.27,
+                "credibility": 38.10
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.8,
+                "credibility": 1.1
+                }
+            },
+        "name": "The Verge"
+    },
+    "cjr.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.26,
+                "credibility": 43.33
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 1.4
+                }
+            },
+        "name": "Columbia Journalism Review"
+    },
+    "latimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.25,
+                "credibility": 42.77
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.5,
+                "credibility": 1.0
+                }
+            },
+        "name": "LA Times"
+    },
+    "cnn.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.26,
+                "credibility": 42.12
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 3.7
+                }
+            },
+        "name": "CNN"
+    },
+    "freep.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -5.43,
+                "credibility": 43.46
+                },
+            "MediaBiasFactCheck": {
+                "bias": -1.6,
+                "credibility": 1.4
+                }
+            },
+        "name": "Detroit Free Press"
+    },
+    "politico.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -5.42,
+                "credibility": 42.32
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.8,
+                "credibility": 1.3
+                }
+            },
+        "name": "Politico"
+    },
+    "people.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -5.53,
+                "credibility": 41.58
+                },
+            "MediaBiasFactCheck": {
+                "bias": -5.1,
+                "credibility": 1.5
+                }
+            },
+        "name": "People Magazine"
+    },
+    "upworthy.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -5.57,
+                "credibility": 39.86
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.3,
+                "credibility": 2.2
+                }
+            },
+        "name": "Upworthy"
+    },
+    "suntimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.35,
+                "credibility": 45.44
+                },
+            "MediaBiasFactCheck": {
+                "bias": -1.6,
+                "credibility": 1.4
+                }
+            },
+        "name": "Chicago Sun-Times"
+    },
+    "pbs.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.26,
+                "credibility": 43.32
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.4,
+                "credibility": 1.0
+                }
+            },
+        "name": "PBS"
+    },
+    "thefiscaltimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.18,
+                "credibility": 43.33
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.6,
+                "credibility": 1.4
+                }
+            },
+        "name": "The Fiscal Times"
+    },
+    "npr.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.32,
+                "credibility": 43.07
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.8,
+                "credibility": 0.9
+                }
+            },
+        "name": "NPR"
+    },
+    "foreignpolicy.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.05,
+                "credibility": 42.63
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.3,
+                "credibility": 1.0
+                }
+            },
+        "name": "Foreign Policy"
+    },
+    "marketwatch.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.88,
+                "credibility": 40.93
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Market Watch"
+    },
+    "usatoday.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.74,
+                "credibility": 40.81
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.8,
+                "credibility": 2.1
+                }
+            },
+        "name": "USA Today"
+    },
+    "businessinsider.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.97,
+                "credibility": 40.63
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.3,
+                "credibility": 2.3
+                }
+            },
+        "name": "Business Insider"
+    },
+    "11alive.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.86,
+                "credibility": 45.75
+                },
+            "MediaBiasFactCheck": {
+                "bias": -0.5,
+                "credibility": 1.0
+                }
+            },
+        "name": "11Alive Atlanta"
+    },
+    "ft.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.98,
+                "credibility": 44.00
+                },
+            "MediaBiasFactCheck": {
+                "bias": 0.4,
+                "credibility": 1.0
+                }
+            },
+        "name": "Financial Times"
+    },
+    "newsday.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.51,
+                "credibility": 46.71
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.7,
+                "credibility": 1.0
+                }
+            },
+        "name": "Newsday"
+    },
+    "patch.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.54,
+                "credibility": 46.09
+                },
+            "MediaBiasFactCheck": {
+                "bias": -0.5,
+                "credibility": 1.0
+                }
+            },
+        "name": "Patch"
+    },
+    "politifact.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.54,
+                "credibility": 44.67
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.1,
+                "credibility": 1.0
+                }
+            },
+        "name": "Politifact"
+    },
+    "axios.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.32,
+                "credibility": 43.05
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.8,
+                "credibility": 0.9
+                }
+            },
+        "name": "Axios"
+    },
+    "afp.com/en": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.40,
+                "credibility": 47.15
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.1,
+                "credibility": 0.5
+                }
+            },
+        "name": "Agence France-Presse"
+    },
+    "apnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.50,
+                "credibility": 44.80
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.1,
+                "credibility": 0.8
+                }
+            },
+        "name": "Associated Press"
+    },
+    "csmonitor.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.52,
+                "credibility": 44.23
+                },
+            "MediaBiasFactCheck": {
+                "bias": -0.7,
+                "credibility": 0.7
+                }
+            },
+        "name": "The Christian Science Monitor"
+    },
+    "abcnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.99,
+                "credibility": 44.39
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.3,
+                "credibility": 1.1
+                }
+            },
+        "name": "ABC News"
+    },
+    "usnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.05,
+                "credibility": 43.47
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "US News and World Report"
+    },
+    "bloomberg.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.96,
+                "credibility": 42.27
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.4,
+                "credibility": 2.2
+                }
+            },
+        "name": "Bloomberg"
+    },
+    "cbsnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.93,
+                "credibility": 41.92
+                },
+            "MediaBiasFactCheck": {
+                "bias": 2.2,
+                "credibility": 3.8
+                }
+            },
+        "name": "CBS News"
+    },
+    "economist.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.90,
+                "credibility": 41.76
+                },
+            "MediaBiasFactCheck": {
+                "bias": 0.4,
+                "credibility": 0.8
+                }
+            },
+        "name": "The Economist"
+    },
+    "forbes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.87,
+                "credibility": 40.73
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.3,
+                "credibility": 2.0
+                }
+            },
+        "name": "Forbes"
+    },
+    "weather.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.85,
+                "credibility": 46.20
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "The Weather Channel"
+    },
+    "cnbc.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.95,
+                "credibility": 43.75
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.3,
+                "credibility": 2.2
+                }
+            },
+        "name": "CNBC"
+    },
+    "dallasnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.91,
+                "credibility": 43.65
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.4,
+                "credibility": 1.0
+                }
+            },
+        "name": "Dallas Morning News"
+    },
+    "scrippsnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.03,
+                "credibility": 43.59
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.3,
+                "credibility": 1.0
+                }
+            },
+        "name": "Scripps News"
+    },
+    "thehill.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.48,
+                "credibility": 41.65
+                },
+            "MediaBiasFactCheck": {
+                "bias": 0.4,
+                "credibility": 2.2
+                }
+            },
+        "name": "The Hill"
+    },
+    "cnet.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.39,
+                "credibility": 40.02
+                },
+            "MediaBiasFactCheck": {
+                "bias": -0.5,
+                "credibility": 1.0
+                }
+            },
+        "name": "CNET"
+    },
+    "usafacts.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -0.07,
+                "credibility": 50.38
+                },
+            "MediaBiasFactCheck": {
+                "bias": 0.0,
+                "credibility": 0.0
+                }
+            },
+        "name": "USA Facts"
+    },
+    "chron.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -0.75,
+                "credibility": 46.55
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Chron"
+    },
+    "bnonews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -0.40,
+                "credibility": 46.37
+                },
+            "MediaBiasFactCheck": {
+                "bias": -1.0,
+                "credibility": 1.0
+                }
+            },
+        "name": "BNO News"
+    },
+    "upi.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.11,
+                "credibility": 45.32
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.6,
+                "credibility": 1.0
+                }
+            },
+        "name": "UPI"
+    },
+    "reuters.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.40,
+                "credibility": 44.98
+                },
+            "MediaBiasFactCheck": {
+                "bias": -0.5,
+                "credibility": 0.0
+                }
+            },
+        "name": "Reuters"
+    },
+    "bbc.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.35,
+                "credibility": 44.66
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.5,
+                "credibility": 2.1
+                }
+            },
+        "name": "CNBC"
+    },
+    "theglobeandmail.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -1.14,
+                "credibility": 43.99
+                },
+            "MediaBiasFactCheck": {
+                "bias": 2.8,
+                "credibility": 1.2
+                }
+            },
+        "name": "The Globe and Mail"
+    },
+    "news.sky.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -0.76,
+                "credibility": 41.77
+                },
+            "MediaBiasFactCheck": {
+                "bias": 1.0,
+                "credibility": 1.0
+                }
+            },
+        "name": "Sky News"
+    },
+    "barrons.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -0.39,
+                "credibility": 44.78
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.0,
+                "credibility": 1.0
+                }
+            },
+        "name": "Barron's"
+    },
+    "arkansasonline.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 0.18,
+                "credibility": 45.14
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.0,
+                "credibility": 1.0
+                }
+            },
+        "name": "Arkansas Democrat-Gazette"
+    },
+    "airforcetimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 1.18,
+                "credibility": 46.01
+                },
+            "MediaBiasFactCheck": {
+                "bias": 0.6,
+                "credibility": 1.4
+                }
+            },
+        "name": "Air Force Times"
+    },
+    "newsnationnow.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 0.53,
+                "credibility": 42.95
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "News Nation"
+    },
+    "readtangle.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 1.58,
+                "credibility": 43.04
+                },
+            "MediaBiasFactCheck": {
+                "bias": 0.5,
+                "credibility": 1.0
+                }
+            },
+        "name": "Tangle"
+    },
+    "deseret.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 2.11,
+                "credibility": 40.70
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.0,
+                "credibility": 1.2
+                }
+            },
+        "name": "Deseret News"
+    },
+    "americanactionforum.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 2.00,
+                "credibility": 40.28
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.8,
+                "credibility": 2.4
+                }
+            },
+        "name": "American Action Forum"
+    },
+    "thecentersquare.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 3.81,
+                "credibility": 40.32
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.8,
+                "credibility": 2.9
+                }
+            },
+        "name": "The Center Square"
+    },
+    "wsj.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 4.35,
+                "credibility": 43.09
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.2,
+                "credibility": 2.4
+                }
+            },
+        "name": "The Wall Street Journal"
+    },
+    "christianitytoday.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 5.39,
+                "credibility": 41.75
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.0,
+                "credibility": 1.2
+                }
+            },
+        "name": "Christianity Today"
+    },
+    "thedispatch.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 5.50,
+                "credibility": 41.08
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.6,
+                "credibility": 1.0
+                }
+            },
+        "name": "The Dispatch"
+    },
+    "ocregister.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 5.43,
+                "credibility": 40.58
+                },
+            "MediaBiasFactCheck": {
+                "bias": 2.9,
+                "credibility": 1.0
+                }
+            },
+        "name": "Orange County Register"
+    },
+    "wng.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 7.28,
+                "credibility": 41.51
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "World News Group"
+    },
+    "wsws.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -26.23,
+                "credibility": 28.28
+                },
+            "MediaBiasFactCheck": {
+                "bias": -8.2,
+                "credibility": 2.9
+                }
+            },
+        "name": "World Socialist Web Site"
+    },
+    "wonkette.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -25.10,
+                "credibility": 19.99
+                },
+            "MediaBiasFactCheck": {
+                "bias": -8.0,
+                "credibility": 4.9
+                }
+            },
+        "name": "Wonkette"
+    },
+    "thegrayzone.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -24.87,
+                "credibility": 17.88
+                },
+            "MediaBiasFactCheck": {
+                "bias": -9.0,
+                "credibility": 6.4
+                }
+            },
+        "name": "The Grayzone"
+    },
+    "socialistalternative.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -23.80,
+                "credibility": 26.17
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Socialist Alternative"
+    },
+    "palmerreport.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -23.36,
+                "credibility": 19.18
+                },
+            "MediaBiasFactCheck": {
+                "bias": -8.2,
+                "credibility": 5.8
+                }
+            },
+        "name": "Palmer Report"
+    },
+    "hartmannreport.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -22.15,
+                "credibility": 17.41
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.9,
+                "credibility": 3.8
+                }
+            },
+        "name": "The Hartmann Report"
+    },
+    "counterpunch.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -21.51,
+                "credibility": 21.39
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.5,
+                "credibility": 3.0
+                }
+            },
+        "name": "CounterPunch"
+    },
+    "crooksandliars.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -21.10,
+                "credibility": 21.53
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.0,
+                "credibility": 3.8
+                }
+            },
+        "name": "Crooks and Liars"
+    },
+    "jacobin.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -21.45,
+                "credibility": 31.69
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.0,
+                "credibility": 1.9
+                }
+            },
+        "name": "Jacobin"
+    },
+    "politizoom.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -19.11,
+                "credibility": 17.54
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.5,
+                "credibility": 4.0
+                }
+            },
+        "name": "PolitiZoom"
+    },
+    "meidasnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -19.05,
+                "credibility": 22.55
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "MeidasTouch News"
+    },
+    "theroot.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -18.47,
+                "credibility": 26.51
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.0,
+                "credibility": 3.5
+                }
+            },
+        "name": "The Root"
+    },
+    "dailykos.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -17.70,
+                "credibility": 26.43
+                },
+            "MediaBiasFactCheck": {
+                "bias": -8.1,
+                "credibility": 5.5
+                }
+            },
+        "name": "Daily KOS"
+    },
+    "peoplefor.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -18.22,
+                "credibility": 27.23
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.3,
+                "credibility": 1.8
+                }
+            },
+        "name": "Right Wing Watch | People For the American Way"
+    },
+    "consortiumnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -16.38,
+                "credibility": 23.10
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.5,
+                "credibility": 4.1
+                }
+            },
+        "name": "Consortium News"
+    },
+    "jezebel.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -18.25,
+                "credibility": 28.55
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.9,
+                "credibility": 2.8
+                }
+            },
+        "name": "Jezebel"
+    },
+    "thenation.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -18.92,
+                "credibility": 30.39
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.4,
+                "credibility": 1.9
+                }
+            },
+        "name": "The Nation"
+    },
+    "inthesetimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -18.09,
+                "credibility": 33.27
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "In These Times"
+    },
+    "commondreams.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -17.16,
+                "credibility": 37.23
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.8,
+                "credibility": 1.9
+                }
+            },
+        "name": "Common Dreams"
+    },
+    "levernews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -17.42,
+                "credibility": 36.18
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.0,
+                "credibility": 1.9
+                }
+            },
+        "name": "The Lever"
+    },
+    "truthout.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -16.87,
+                "credibility": 33.35
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.4,
+                "credibility": 3.7
+                }
+            },
+        "name": "Truthout"
+    },
+    "newrepublic.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -16.66,
+                "credibility": 29.75
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.5,
+                "credibility": 1.8
+                }
+            },
+        "name": "The New Republic"
+    },
+    "democracynow.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -16.15,
+                "credibility": 31.68
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.4,
+                "credibility": 1.0
+                }
+            },
+        "name": "Democracy Now!"
+    },
+    "theintercept.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -14.03,
+                "credibility": 37.37
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.8,
+                "credibility": 2.4
+                }
+            },
+        "name": "The Intercept"
+    },
+    "motherjones.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -15.09,
+                "credibility": 35.58
+                },
+            "MediaBiasFactCheck": {
+                "bias": -4.4,
+                "credibility": 1.0
+                }
+            },
+        "name": "Mother Jones"
+    },
+    "mediamatters.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -15.06,
+                "credibility": 26.45
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.5,
+                "credibility": 1.9
+                }
+            },
+        "name": "Media Matters for America"
+    },
+    "ms.now": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.94,
+                "credibility": 34.36
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.4,
+                "credibility": 5.8
+                }
+            },
+        "name": "MS NOW"
+    },
+    "rawstory.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.72,
+                "credibility": 33.99
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.6,
+                "credibility": 2.6
+                }
+            },
+        "name": "Raw Story"
+    },
+    "vanityfair.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.95,
+                "credibility": 33.34
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.6,
+                "credibility": 2.5
+                }
+            },
+        "name": "Vanity Fair"
+    },
+    "salon.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.72,
+                "credibility": 32.88
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.7,
+                "credibility": 3.2
+                }
+            },
+        "name": "Salon"
+    },
+    "hillreporter.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.11,
+                "credibility": 32.56
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.0,
+                "credibility": 1.8
+                }
+            },
+        "name": "Hill Reporter"
+    },
+    "rollingstone.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.76,
+                "credibility": 26.24
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.3,
+                "credibility": 1.8
+                }
+            },
+        "name": "Rolling Stone"
+    },
+    "cosmopolitan.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -13.11,
+                "credibility": 24.22
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.8,
+                "credibility": 5.0
+                }
+            },
+        "name": "The Intercept"
+    },
+    "slate.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -12.80,
+                "credibility": 35.27
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.4,
+                "credibility": 2.7
+                }
+            },
+        "name": "Slate"
+    },
+    "alternet.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -12.41,
+                "credibility": 35.81
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.9,
+                "credibility": 1.8
+                }
+            },
+        "name": "AlterNet"
+    },
+    "washingtonmonthly.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -12.08,
+                "credibility": 35.78
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.5,
+                "credibility": 1.9
+                }
+            },
+        "name": "Washington Monthly"
+    },
+    "talkingpointsmemo.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -11.79,
+                "credibility": 35.81
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.3,
+                "credibility": 2.2
+                }
+            },
+        "name": "Talking Points Memo"
+    },
+    "blavity.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -11.91,
+                "credibility": 33.01
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Blavity"
+    },
+    "thedailybeast.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -10.77,
+                "credibility": 31.23
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.6,
+                "credibility": 4.6
+                }
+            },
+        "name": "The Daily Beast"
+    },
+    "dailydot.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -9.74,
+                "credibility": 25.56
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.0,
+                "credibility": 1.8
+                }
+            },
+        "name": "The Daily Dot"
+    },
+    "mediaite.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -8.85,
+                "credibility": 34.41
+                },
+            "MediaBiasFactCheck": {
+                "bias": -4.5,
+                "credibility": 1.6
+                }
+            },
+        "name": "The Intercept"
+    },
+    "nydailynews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -8.10,
+                "credibility": 34.12
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.9,
+                "credibility": 1.0
+                }
+            },
+        "name": "New York Daily News"
+    },
+    "wired.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.19,
+                "credibility": 37.13
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.0,
+                "credibility": 1.0
+                }
+            },
+        "name": "WIRED"
+    },
+    "inquisitr.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -7.24,
+                "credibility": 32.92
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.5,
+                "credibility": 1.9
+                }
+            },
+        "name": "Inquisitr"
+    },
+    "newser.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -5.52,
+                "credibility": 36.83
+                },
+            "MediaBiasFactCheck": {
+                "bias": -2.8,
+                "credibility": 1.0
+                }
+            },
+        "name": "Newser"
+    },
+    "thebulwark.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.63,
+                "credibility": 34.17
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.7,
+                "credibility": 1.0
+                }
+            },
+        "name": "The Bulwark"
+    },
+    "tmz.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -4.22,
+                "credibility": 34.76
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.0,
+                "credibility": 6.0
+                }
+            },
+        "name": "TMZ"
+    },
+    "mirror.co.uk": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -3.37,
+                "credibility": 24.50
+                },
+            "MediaBiasFactCheck": {
+                "bias": -4.8,
+                "credibility": 6.0
+                }
+            },
+        "name": "Daily Mirror"
+    },
+    "fortune.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -2.91,
+                "credibility": 36.96
+                },
+            "MediaBiasFactCheck": {
+                "bias": 2.5,
+                "credibility": 1.2
+                }
+            },
+        "name": "Fortune"
+    },
+    "reason.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 4.14,
+                "credibility": 35.79
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.8,
+                "credibility": 1.7
+                }
+            },
+        "name": "Reason"
+    },
+    "dailymail.co.uk": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 4.64,
+                "credibility": 30.78
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.6,
+                "credibility": 7.1
+                }
+            },
+        "name": "Daily Mail"
+    },
+    "foxbusiness.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 8.98,
+                "credibility": 38.70
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.0,
+                "credibility": 4.9
+                }
+            },
+        "name": "Fox Business"
+    },
+    "quillette.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 9.27,
+                "credibility": 37.53
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.8,
+                "credibility": 6.2
+                }
+            },
+        "name": "Quillette"
+    },
+    "bostonherald.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 9.68,
+                "credibility": 36.31
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.5,
+                "credibility": 1.8
+                }
+            },
+        "name": "Boston Herald"
+    },
+    "christianpost.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 10.65,
+                "credibility": 36.16
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.6,
+                "credibility": 5.0
+                }
+            },
+        "name": "Christian Post"
+    },
+    "theepochtimes.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 8.21,
+                "credibility": 35.34
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.5,
+                "credibility": 3.9
+                }
+            },
+        "name": "The Epoch Times"
+    },
+    "teenvogue.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -15.50,
+                "credibility": 37.79
+                },
+            "MediaBiasFactCheck": {
+                "bias": -6.5,
+                "credibility": 3.0
+                }
+            },
+        "name": "Teen Vogue"
+    },
+    "nypost.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 9.44,
+                "credibility": 31.04
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.9,
+                "credibility": 5.9
+                }
+            },
+        "name": "New York Post"
+    },
+    "city-journal.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 10.21,
+                "credibility": 35.00
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.1,
+                "credibility": 2.8
+                }
+            },
+        "name": "City Journal"
+    },
+    "thecollegefix.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 10.31,
+                "credibility": 34.39
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.1,
+                "credibility": 5.4
+                }
+            },
+        "name": "The College Fix"
+    },
+    "foxnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 11.23,
+                "credibility": 34.44
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.0,
+                "credibility": 7.6
+                }
+            },
+        "name": "Fox News"
+    },
+    "washingtonexaminer.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 11.15,
+                "credibility": 34.13
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.8,
+                "credibility": 2.2
+                }
+            },
+        "name": "Washington Examiner"
+    },
+    "justthenews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 10.90,
+                "credibility": 32.56
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.1,
+                "credibility": 6.3
+                }
+            },
+        "name": "Just the News"
+    },
+    "dailycaller.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.71,
+                "credibility": 34.47
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.6,
+                "credibility": 5.5
+                }
+            },
+        "name": "Daily Caller"
+    },
+    "rasmussenreports.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 13.78,
+                "credibility": 34.05
+                },
+            "MediaBiasFactCheck": {
+                "bias": 2.8,
+                "credibility": 2.3
+                }
+            },
+        "name": "Rasmussen Reports"
+    },
+    "cbn.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 15.23,
+                "credibility": 34.00
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.9,
+                "credibility": 5.5
+                }
+            },
+        "name": "CBN"
+    },
+    "ncregister.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 11.62,
+                "credibility": 32.13
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.7,
+                "credibility": 5.1
+                }
+            },
+        "name": "National Catholic Register"
+    },
+    "thepostmillenial.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.14,
+                "credibility": 31.43
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "The Post Millenial"
+    },
+    "nationalreview.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.70,
+                "credibility": 31.35
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.6,
+                "credibility": 3.5
+                }
+            },
+        "name": "National Review"
+    },
+    "nysun.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.84,
+                "credibility": 31.50
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.0,
+                "credibility": 1.8
+                }
+            },
+        "name": "New York Sun"
+    },
+    "dailywire.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 13.19,
+                "credibility": 31.02
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.2,
+                "credibility": 5.9
+                }
+            },
+        "name": "The Daily Wire"
+    },
+    "theamericanconservative.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 14.36,
+                "credibility": 31.64
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.5,
+                "credibility": 1.8
+                }
+            },
+        "name": "The American Conservative"
+    },
+    "breitbart.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 13.56,
+                "credibility": 30.43
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.1,
+                "credibility": 6.4
+                }
+            },
+        "name": "Breitbart"
+    },
+    "theblaze.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 13.64,
+                "credibility": 30.04
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.8,
+                "credibility": 6.3
+                }
+            },
+        "name": "Blaze Media"
+    },
+    "rt.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 11.44,
+                "credibility": 28.71
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.70,
+                "credibility": 9.0
+                }
+            },
+        "name": "RT News"
+    },
+    "rebelnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.09,
+                "credibility": 27.12
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.3,
+                "credibility": 6.4
+                }
+            },
+        "name": "Rebel News"
+    },
+    "thespectator.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.62,
+                "credibility": 28.47
+                },
+            "MediaBiasFactCheck": {
+                "bias": 4.3,
+                "credibility": 2.9
+                }
+            },
+        "name": "The Spectator World"
+    },
+    "ijr.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 12.66,
+                "credibility": 26.13
+                },
+            "MediaBiasFactCheck": {
+                "bias": 6.7,
+                "credibility": 2.9
+                }
+            },
+        "name": "Independent Journal Review"
+    },
+    "newsmax.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 13.43,
+                "credibility": 28.17
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.8,
+                "credibility": 7.6
+                }
+            },
+        "name": "Newsmax"
+    },
+    "outkick.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 13.72,
+                "credibility": 27.30
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.0,
+                "credibility": 5.8
+                }
+            },
+        "name": "OutKick"
+    },
+    "oann.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 14.01,
+                "credibility": 28.56
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.9,
+                "credibility": 8.0
+                }
+            },
+        "name": "One America News Network"
+    },
+    "freebeacon.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 14.11,
+                "credibility": 24.06
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.7,
+                "credibility": 5.9
+                }
+            },
+        "name": "Washington Free Beacon"
+    },
+    "realclearpolitics.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 14.45,
+                "credibility": 26.90
+                },
+            "MediaBiasFactCheck": {
+                "bias": 3.4,
+                "credibility": 2.6
+                }
+            },
+        "name": "Real Clear Politics"
+    },
+    "publishedreporter.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 15.48,
+                "credibility": 26.86
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.5,
+                "credibility": 7.5
+                }
+            },
+        "name": "Published Reporter"
+    },
+    "heritage.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 16.30,
+                "credibility": 27.86
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.1,
+                "credibility": 5.8
+                }
+            },
+        "name": "Heritage Foundation"
+    },
+    "billoreilly.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 17.36,
+                "credibility": 28.58
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Bill O'Reilly"
+    },
+    "townhall.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 19.45,
+                "credibility": 25.13
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.0,
+                "credibility": 6.4
+                }
+            },
+        "name": "Townhall"
+    },
+    "judicialwatch.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 23.08,
+                "credibility": 23.83
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.0,
+                "credibility": 8.2
+                }
+            },
+        "name": "Judicial Watch"
+    },
+    "climate.news": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 11.93,
+                "credibility": 20.03
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.8,
+                "credibility": 9.0
+                }
+            },
+        "name": "Climate News"
+    },
+    "zerohedge.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 16.46,
+                "credibility": 20.85
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.1,
+                "credibility": 8.0
+                }
+            },
+        "name": "Zero Hedge"
+    },
+    "tpusa.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 16.97,
+                "credibility": 20.60
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.5,
+                "credibility": 8.0
+                }
+            },
+        "name": "Turning Point USA"
+    },
+    "dailysignal.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 17.11,
+                "credibility": 20.50
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.7,
+                "credibility": 5.0
+                }
+            },
+        "name": "Daily Signal"
+    },
+    "activistpost.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 16.32,
+                "credibility": 17.81
+                },
+            "MediaBiasFactCheck": {
+                "bias": -7.0,
+                "credibility": 8.0
+                }
+            },
+        "name": "Activist Post"
+    },
+    "thefederalist.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 18.44,
+                "credibility": 21.39
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.8,
+                "credibility": 6.4
+                }
+            },
+        "name": "The Federalist"
+    },
+    "westernjournal.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 19.27,
+                "credibility": 21.41
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.0,
+                "credibility": 6.3
+                }
+            },
+        "name": "Western Journal"
+    },
+    "newsbusters.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 20.48,
+                "credibility": 19.99
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.5,
+                "credibility": 6.0
+                }
+            },
+        "name": "NewsBusters"
+    },
+    "twitchy.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 20.93,
+                "credibility": 17.84
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.1,
+                "credibility": 5.8
+                }
+            },
+        "name": "Twitchy"
+    },
+    "redstate.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 21.39,
+                "credibility": 21.01
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.5,
+                "credibility": 6.0
+                }
+            },
+        "name": "RedState"
+    },
+    "pjmedia.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 21.42,
+                "credibility": 18.60
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "PJ Media"
+    },
+    "amgreatness.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 22.38,
+                "credibility": 19.03
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.5,
+                "credibility": 6.0
+                }
+            },
+        "name": "American Greatness"
+    },
+    "spectator.org": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 22.67,
+                "credibility": 17.77
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.5,
+                "credibility": 6.0
+                }
+            },
+        "name": "The American Spectator"
+    },
+    "glennbeck.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 23.41,
+                "credibility": 21.21
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Glenn Beck"
+    },
+    "mercola.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 17.78,
+                "credibility": 14.71
+                },
+            "MediaBiasFactCheck": {
+                "bias": 5.0,
+                "credibility": 8.9
+                }
+            },
+        "name": "Mercola"
+    },
+    "bigleaguepolitics.substack.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 17.64,
+                "credibility": 8.27
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.8,
+                "credibility": 8.0
+                }
+            },
+        "name": "Big League Politics"
+    },
+    "wnd.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 21.12,
+                "credibility": 13.14
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.0,
+                "credibility": 7.9
+                }
+            },
+        "name": "WND"
+    },
+    "infowars.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 23.46,
+                "credibility": 15.90
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.9,
+                "credibility": 10.0
+                }
+            },
+        "name": "InfoWars"
+    },
+    "thegatewaypundit.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 23.57,
+                "credibility": 14.85
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.5,
+                "credibility": 10.0
+                }
+            },
+        "name": "The Gateway Pundit"
+    },
+    "thepostemail.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 23.24,
+                "credibility": 14.69
+                },
+            "MediaBiasFactCheck": {
+                "bias": 8.5,
+                "credibility": 6.0
+                }
+            },
+        "name": "The Post & Email"
+    },
+    "thepeoplesvoice.tv": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 24.39,
+                "credibility": 13.56
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.8,
+                "credibility": 10.0
+                }
+            },
+        "name": "The People's Voice"
+    },
+    "lewrockwell.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 24.09,
+                "credibility": 11.52
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.2,
+                "credibility": 8.0
+                }
+            },
+        "name": "Lew Rockwell"
+    },
+    "americanlibertyreportnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 28.79,
+                "credibility": 10.93
+                },
+            "MediaBiasFactCheck": {
+                "bias": 7.5,
+                "credibility": 7.6
+                }
+            },
+        "name": "American Liberty Report"
+    },
+    "naturalnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 28.06,
+                "credibility": 9.31
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.5,
+                "credibility": 10.0
+                }
+            },
+        "name": "Natural News"
+    },
+    "newstarget.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 29.87,
+                "credibility": 7.74
+                },
+            "MediaBiasFactCheck": {
+                "bias": 9.5,
+                "credibility": 8.4
+                }
+            },
+        "name": "NewsTarget"
+    },
+    "beforeitsnews.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": 29.41,
+                "credibility": 6.23
+                },
+            "MediaBiasFactCheck": {
+                "bias": null,
+                "credibility": null
+                }
+            },
+        "name": "Before It's News"
+    }
+}
+
+
+    

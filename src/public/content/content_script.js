@@ -90,6 +90,17 @@ setTimeout(() => {
     }
 }, 5000);
 
+// Build full post text for claim detection (same as getClauses input)
+function getPostText(postContent) {
+    if (!postContent) return "";
+    if (postContent.platform === "reddit") {
+        return [postContent.title, postContent.body].filter(Boolean).join("\n\n");
+    }
+    if (postContent.platform === "instagram") return postContent.caption || "";
+    if (postContent.platform === "twitter") return postContent.text || "";
+    return "";
+}
+
 // Our page handler
 async function handlePageChange(url) {
     try {
@@ -101,19 +112,17 @@ async function handlePageChange(url) {
             return;
         }
 
-        // Send content back to background script
         chrome.runtime.sendMessage({
             type: "post-content-updated",
-            postContent
+            postContent: postContent,
         }, (response) => {
             if (chrome.runtime.lastError) {
                 console.error("Error sending message:", chrome.runtime.lastError);
             } else {
-                console.log("Post extracted and sent:", postContent);
+                console.log("Post extracted and sent");
             }
         });
     } catch(error) {
-        // Log errors for debugging, but don't spam console
         if (error.message && !error.message.includes("not ready yet") && !error.message.includes("not supported")) {
             console.warn("Error extracting post:", error.message, "URL:", url);
         } else {
@@ -121,6 +130,29 @@ async function handlePageChange(url) {
         }
     }
 }
+
+// Return clauses for the current post. Popup runs the claim model in the browser.
+async function runClaimDetection() {
+    const url = location.href;
+    let postContent = null;
+    try {
+        postContent = await getPostContent(url);
+    } catch (e) {
+        return { clauses: [], error: "No post content" };
+    }
+    if (!postContent) return { clauses: [], error: "No post content" };
+
+    const fullText = getPostText(postContent);
+    const clauses = typeof getClauses === "function" ? getClauses(fullText) : [];
+    return { clauses };
+}
+
+chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
+    if (message.type === "run-claim-detection") {
+        runClaimDetection().then(sendResponse);
+        return true;
+    }
+});
 
 // Helper function to wait for elements to load
 function waitForElement(selector, timeout = 5000) {
