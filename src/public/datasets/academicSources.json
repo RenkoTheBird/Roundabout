@@ -1,0 +1,293 @@
+{
+    "https://acsjournals.onlinelibrary.wiley.com": {
+        "name": "American Cancer Society"
+    },
+    "https://www.cdc.gov/mmwr/index.html": {
+        "name": "Morbidity and Mortality Weekly Report"
+    },
+    "https://www.nature.com/nrm/": {
+        "name": "Nature Reviews Molecular Cell Biology"
+    },
+    "https://academic.oup.com/qje": {
+        "name": "Quarterly Journal of Economics"
+    },
+    "https://www.nature.com/nrd/": {
+        "name": "Nature Reviews Drug Discovery"
+    },
+    "https://www.nature.com/nrclinonc/": { 
+        "name": "Nature Reviews Clinical Oncology"
+    },
+    "https://www.aeaweb.org/journals/aer": {
+        "name": "American Economic Review"
+    },
+    "https://www.nature.com/nrc/": {
+        "name": "Nature Reviews Cancer"
+    },
+    "https://onlinelibrary.wiley.com/journal/15406261": {
+        "name": "Journal of Finance"
+    },
+    "https://www.emerald.com/ftmal": {
+        "name": "Foundations and Trends in Machine Learning"
+    },
+    "https://www.cell.com/cell/": {
+        "name": "Cell"
+    },
+    "https://onlinelibrary.wiley.com/journal/14680262": {
+        "name": "Econometrica"
+    },
+    "https://www.nature.com/natrevmats/": {
+        "name": "Nature Reviews Materials"
+    },
+    "https://academic.oup.com/restud": {
+        "name": "The Review of Economic Studies"
+    },
+    "https://www.nejm.org": {
+        "name": "New England Journal of Medicine"
+    },
+    "https://www.sciencedirect.com/journal/annals-of-oncology": {
+        "name": "Annals of Oncology"
+    },
+    "https://www.cell.com/cancer-cell/": {
+        "name": "Cancer Cell"
+    },
+    "https://www.nature.com/nbt/": {
+        "name": "Nature Biotechnology"
+    },
+    "https://onlinelibrary.wiley.com/journal/20515545": {
+        "name": "World Psychiatry"
+    },
+    "https://www.nature.com/nm/": {
+        "name": "Nature Medicine"
+    },
+    "https://www.nature.com": {
+        "name": "Nature"
+    },
+    "https://journals.aps.org/rmp/": {
+        "name": "Reviews of Modern Physics"
+    },
+    "https://www.nature.com/nrdp/": {
+        "name": "Nature Reviews Disease Primers"
+    },
+    "https://www.sciencedirect.com/journal/journal-of-financial-economics": {
+        "name": "Journal of Financial Economics"
+    },
+    "https://www.nature.com/nenergy/": {
+        "name": "Nature Energy"
+    },
+    "https://www.nature.com/nmeth/": {
+        "name": "Nature Methods"
+    },
+    "https://www.journals.uchicago.edu/toc/jpe/current": {
+        "name": "Journal of Political Economy"
+    },
+    "https://www.nature.com/ng/": {
+        "name": "Nature Genetics"
+    },
+    "https://academic.oup.com/rfs": {
+        "name": "The Review of Financial Studies"
+    },
+    "https://www.annualreviews.org/content/journals/immunol": {
+        "name": "Annual Review of Immunology"
+    },
+    "https://www.nature.com/nrg/": {
+        "name": "Nature Reviews Genetics"
+    },
+    "https://www.cdc.gov/NCHS/products/nvsr.htm": {
+        "name": "National Vital Statistics Reports"
+    },
+    "https://www.cdc.gov/mmwr/indss_2020.html": {
+        "name": "Morbidity and Mortality Weekly Report"
+    },
+    "https://www.nature.com/nrmp/": {
+        "name": "Nature Reviews Methods Primers"
+    },
+    "https://www.nature.com/nnano/": {
+        "name": "Nature Nanotechnology"
+    },
+    "https://link.springer.com/journal/41114": {
+        "name": "Living Reviews in Relativity"
+    },
+    "https://journals.aom.org/journal/amr": {
+        "name": "Academy of Management Review"
+    },
+    "https://www.nature.com/nmat/": {
+        "name": "Nature Materials"
+    },
+    "https://ieeexplore.ieee.org/xpl/RecentIssue.jsp?punumber=9739": {
+        "name": "IEEE Communications Surveys & Tutorials"
+    },
+    "https://www.nature.com/natcatal/": {
+        "name": "Nature Catalysis"
+    },
+    "https://journals.aom.org/journal/annals": {
+        "name": "Academy of Management Annals"
+    },
+    "https://www.nature.com/nrmicro/": {
+        "name": "Nature Reviews Microbiology"
+    },
+    "https://www.annualreviews.org/content/journals/psych": {
+        "name": "Annual Review of Psychology"
+    },
+    "https://www.aeaweb.org/journals/mac": {
+        "name": "American Economic Journal: Macroeconomics"
+    },
+    "https://www.nature.com/natrevearthenviron/": {
+        "name": "Nature Reviews Earth & Environment"
+    },
+    "https://www.nature.com/natrevchem/": {
+        "name": "Nature Reviews Chemistry"
+    },
+    "https://www.ama.org/journal-of-marketing/": {
+        "name": "Journal of Marketing"
+    },
+    "https://www.aeaweb.org/journals/jel": {
+        "name": "Journal of Economic Literature"
+    },
+    "https://www.annualreviews.org/content/journals/astro": {
+        "name": "Annual Review of Astronomy and Astrophysics"
+    },
+    "https://www.annualreviews.org/content/journals/orgpsych": {
+        "name": "Annual Review of Organizational Psychology and Organizational Behavior"
+    },
+    "https://www.thelancet.com/journals/landia/home": {
+        "name": "The Lancet Diabetes & Endocrinology"
+    },
+    "https://www.annualreviews.org/content/journals/pathmechdis": {
+        "name": "Annual Review of Pathology: Mechanisms of Disease"
+    },
+    "https://www.sciencedirect.com/journal/journal-of-econometrics": {
+        "name": "Journal of Econometrics"
+    },
+    "https://journals.physiology.org/journal/physrev": {
+        "name": "Physiological Reviews"
+    },
+    "https://www.cell.com/immunity/home": {
+        "name": "Immunity"
+    },
+    "https://www.nature.com/sigtrans/": {
+        "name": "Signal Transduction and Targeted Therapy"
+    },
+    "https://www.thelancet.com/journals/lancet/": {
+        "name": "The Lancet"
+    },
+    "https://www.cell.com/cell-metabolism/": {
+        "name": "Cell Metabolism"
+    },
+    "https://www.nature.com/natcancer/": {
+        "name": "Nature Cancer"
+    },
+    "https://www.thelancet.com/journals/laneur/": {
+        "name": "The Lancet Neurology"
+    },
+    "https://www.cdc.gov/mmwr/ind2016_su.html": {
+        "name": "Morbidity and Mortality Weekly Report supplement"
+    },
+    "https://www.nature.com/nphoton/": {
+        "name": "Nature Photonics"
+    },
+    "https://www.rsc.org/publishing/journals/chem-soc-rev": {
+        "name": "Chemical Society Reviews"
+    },
+    "https://www.thelancet.com/journals/langas/": {
+        "name": "The Lancet Gastroenterology & Hepatology"
+    },
+    "https://link.springer.com/journal/43593": {
+        "name": "eLight"
+    },
+    "https://www.thelancet.com/journals/lanonc/home": {
+        "name": "The Lancet Oncology"
+    },
+    "https://ascopubs.org/journal/jco": {
+        "name": "Journal of Clinical Oncology"
+    },
+    "https://www.nature.com/neuro/": {
+        "name": "Nature Neuroscience"
+    },
+    "https://www.nature.com/natelectron/": {
+        "name": "Nature Electronics"
+    },
+    "https://www.cell.com/joule/": {
+        "name": "Joule"
+    },
+    "https://www.kisupplements.org": {
+        "name": "Kidney International Supplements"
+    },
+    "https://www.journal-of-hepatology.eu": {
+        "name": "Journal of Hepatology"
+    },
+    "https://agupubs.onlinelibrary.wiley.com/journal/19449208": {
+        "name": "Reviews of Geophysics"
+    },
+    "https://www.rsc.org/publishing/journals/energy-and-environmental-science": {
+        "name": "Energy & Environmental Science"
+    },
+    "https://www.aom.org/publications/journals/journal/": {
+        "name": "Academy of Management Journal"
+    },
+    "https://www.science.org": {
+        "name": "Science"
+    },
+    "https://journals.sagepub.com/home/asq": {
+        "name": "Administrative Science Quarterly"
+    },
+    "https://www.nature.com/ni/": {
+        "name": "Nature Immunology"
+    },
+    "https://www.sciencedirect.com/handbook/handbook-of-industrial-organization": {
+        "name": "Handbook of Industrial Organization"
+    },
+    "https://link.springer.com/journal/13045": {
+        "name": "Journal of Hematology & Oncology"
+    },
+    "https://journals.sagepub.com/home/orm": {
+        "name": "Organizational Research Methods"
+    },
+    "https://sms.onlinelibrary.wiley.com/journal/10970266": {
+        "name": "Strategic Management Society"
+    },
+    "https://www.nature.com/natbiomedeng/": {
+        "name": "Nature Biomedical Engineering"
+    },
+    "https://www.nature.com/nrgastro/": {
+        "name": "Nature Reviews Gastroenterology & Hepatology"
+    },
+    "https://www.nature.com/natrevphys/": {
+        "name": "Nature Reviews Physics"
+    },
+    "https://www.annualreviews.org/content/journals/conmatphys": {
+        "name": "Annual Review of Condensed Matter Physics"
+    },
+    "https://www.journals.uchicago.edu/toc/ma/current": {
+        "name": "NBER Macroeconomics Annual"
+    },
+    "https://www.sciencedirect.com/journal/escience": {
+        "name": "eScience"
+    },
+    "https://www.cdc.gov/mmwr/": {
+        "name": "Morbidity and Mortality Weekly Report"
+    },
+    "https://www.annualreviews.org/content/journals/biochem": {
+        "name": "Annual Review of Biochemistry"
+    },
+    "https://link.springer.com/journal/159": {
+        "name": "The Astronomy and Astrophysics Review"
+    },
+    "https://www.nature.com/nrn/": {
+        "name": "Nature Reviews Neuroscience"
+    },
+    "https://www.cell.com/cell-stem-cell/": {
+        "name": "Cell Stem Cell"
+    },
+    "https://link.springer.com/journal/12943": {
+        "name": "Molecular Cancer"
+    },
+    "https://academic.oup.com/edrv": {
+        "name": "Endocrine Reviews"
+    },
+    "https://press.princeton.edu/series/annals-of-mathematics-studies": {
+        "name": "Annals of Mathematics Studies"
+    },
+    "https://intlpress.com/journals/journalList?id=1804409921462136833": {
+        "name": "Acta Mathematica"
+    },
+}

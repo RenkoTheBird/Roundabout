@@ -205,20 +205,27 @@ async function getPostContent(url) {
     throw new Error("This site is not supported: " + url);
 }
 
-// Reddit HTML structure: Post title is in <h1> on the given page
-// Many surrounding (Tailwind CSS?) tags around it, but they are not necessary
+// Reddit HTML structure: Post title is in <h1>; post date in <time datetime="..."> (first time on page is usually the post)
 async function getPostReddit(url) {
     if (url.includes("old.reddit.com")) {
         throw new Error("Old Reddit is not supported by Roundabout.");
     }
     await waitForElement('h1');
 
-    // Using this structure so we only go through if post content exists
-    return {
-        platform: "reddit", // Will be used in App.jsx switch statement
-        title: document.querySelector('h1')?.innerText ?? "",
-        body: document.querySelector('div[slot="text-body"]')?.innerText ?? ""
+    let createdTimestamp;
+    const timeEl = document.querySelector('time[datetime]');
+    if (timeEl && timeEl.getAttribute('datetime')) {
+        const dt = timeEl.getAttribute('datetime');
+        const d = new Date(dt);
+        if (!Number.isNaN(d.getTime())) createdTimestamp = d.toISOString();
     }
+
+    return {
+        platform: "reddit",
+        title: document.querySelector('h1')?.innerText ?? "",
+        body: document.querySelector('div[slot="text-body"]')?.innerText ?? "",
+        ...(createdTimestamp != null && { createdTimestamp }),
+    };
 }
 
 // Instagram HTML structure: Instagram captions can be in various places
@@ -310,19 +317,42 @@ async function getPostInstagram() {
     }
 
     console.log("getPostInstagram: Successfully extracted caption:", caption.substring(0, 100));
+
+    let createdTimestamp;
+    const timeEl = document.querySelector('article time[datetime]');
+    if (timeEl && timeEl.getAttribute('datetime')) {
+        const d = new Date(timeEl.getAttribute('datetime'));
+        if (!Number.isNaN(d.getTime())) createdTimestamp = d.toISOString();
+    }
+
     return {
         platform: "instagram",
-        caption: caption
-    }
+        caption: caption,
+        ...(createdTimestamp != null && { createdTimestamp }),
+    };
 }
 
-// Twitter HTML structure: Likewise, for Twitter, we just need the words in the post.
-// here we can find the words nested inside the tweet article.
+// Twitter/X HTML structure: Tweet text in [data-testid="tweetText"]; timestamp often in link with data-time (Unix s) or time[datetime]
 async function getPostTwitter() {
-    await waitForElement('article[data-testid="tweet"]');
+    const article = await waitForElement('article[data-testid="tweet"]');
+
+    let createdTimestamp;
+    const withDataTime = article.querySelector('[data-time]');
+    if (withDataTime) {
+        const unixSec = parseInt(withDataTime.getAttribute('data-time'), 10);
+        if (!Number.isNaN(unixSec)) createdTimestamp = new Date(unixSec * 1000).toISOString();
+    }
+    if (!createdTimestamp) {
+        const timeEl = article.querySelector('time[datetime]');
+        if (timeEl && timeEl.getAttribute('datetime')) {
+            const d = new Date(timeEl.getAttribute('datetime'));
+            if (!Number.isNaN(d.getTime())) createdTimestamp = d.toISOString();
+        }
+    }
 
     return {
         platform: "twitter",
-        text: document.querySelector('[data-testid="tweetText"]')?.innerText ?? ""
-    }
+        text: document.querySelector('[data-testid="tweetText"]')?.innerText ?? "",
+        ...(createdTimestamp != null && { createdTimestamp }),
+    };
 }

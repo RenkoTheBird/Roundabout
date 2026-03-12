@@ -23,5 +23,8 @@ Claims list:
 Opinions list (reviews):
 The "Reviews" dataset by Jyoti Kushwaha at https://www.kaggle.com/datasets/jyotikushwaha545/reviews on Kaggle.
 
+Questions list:
+SQuAD Dataset (Stanford Question Answering Dataset); found at https://rajpurkar.github.io/SQuAD-explorer/
+
 This extension uses the following ML models:
 - all-MiniLM-L6-v2 for sentence transformation

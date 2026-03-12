@@ -221,6 +221,18 @@ div.postFont {
   min-width: 0;
 }
 
+.source-name-label {
+  flex-shrink: 0;
+  font-size: 13px;
+  color: #64748b;
+  margin-left: auto;
+  padding-right: 8px;
+  max-width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .source-score-box {
   flex-shrink: 0;
   display: inline-flex;
@@ -235,6 +247,12 @@ div.postFont {
   border: 1px solid #e67a00;
   border-radius: 6px;
   font-family: "Outfit", sans-serif;
+}
+
+.search-result-date {
+  font-size: 14px;
+  color: #64748b;
+  margin: 0 0 8px 0;
 }
 
 .search-result-details {

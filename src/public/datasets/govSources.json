@@ -1,0 +1,185 @@
+{
+    "alison.legislature.state.al.us": {
+        "name": "Alabama Legislature"
+    },
+    "akleg.gov": {
+        "name": "Alaska Legislature"
+    },
+    "azleg.gov": {
+        "name": "Arizona Legislature"
+    },
+    "arkleg.state.ar.us": {
+        "name": "Arkansas Legislature"
+    },
+    "leginfo.legislature.ca.gov": {
+        "name": "California Legislature"
+    },
+    "leg.colorado.gov": {
+        "name": "Colorado Legislature"
+    },
+    "cga.ct.gov": {
+        "name": "Connecticut Legislature"
+    },
+    "legis.delaware.gov": {
+        "name": "Delaware Legislature"
+    },
+    "dc.council.gov/legislation/": {
+        "name": "Washington, D.C. Legislature"
+    },
+    "leg.state.fl.us": {
+        "name": "Florida Legislature"
+    },
+    "legis.ga.gov": {
+        "name": "Georgia Legislature"
+    },
+    "capitol.hawaii.gov": {
+        "name": "Hawaii Legislature"
+    },
+    "legislature.idaho.gov": {
+        "name": "Idaho Legislature"
+    },
+    "ilga.gov": {
+        "name": "Illinois Legislature"
+    },
+    "iga.in.gov": {
+        "name": "Indiana Legislature"
+    },
+    "legis.iowa.gov": {
+        "name": "Iowa Legislature"
+    },
+    "kslegislature.gov": {
+        "name": "Kansas Legislature"
+    },
+    "legislature.ky.gov": {
+        "name": "Kentucky Legislature"
+    },
+    "legis.la.gov": {
+        "name": "Louisiana Legislature"
+    },
+    "legislature.maine.gov": {
+        "name": "Maine Legislature"
+    },
+    "mgaleg.maryland.gov": {
+        "name": "Maryland Legislature"
+    },
+    "malegislature.gov": {
+        "name": "Massachusetts Legislature"
+    },
+    "legislature.mi.gov": {
+        "name": "Michigan Legislature"
+    },
+    "leg.state.mn.us": {
+        "name": "Minnesota Legislature"
+    },
+    "legislature.ms.gov": {
+        "name": "Mississippi Legislature"
+    },
+    "mo.gov/government/legislative-branch/": {
+        "name": "Missouri Legislature"
+    },
+    "leg.mt.gov": {
+        "name": "Montana Legislature"
+    },
+    "nebraskalegislature.gov": {
+        "name": "Nebraska Legislature"
+    },
+    "leg.state.nv.us": {
+        "name": "Nevada Legislature"
+    },
+    "gc.nh.gov": {
+        "name": "New Hampshire Legislature"
+    },
+    "njleg.state.nj.us": {
+        "name": "New Jersey Legislature"
+    },
+    "nmlegis.gov": {
+        "name": "New Mexico Legislature"
+    },
+    "nyassembly.gov": {
+        "name": "New York Legislature"
+    },
+    "ncleg.gov": {
+        "name": "North Carolina Legislature"
+    },
+    "legis.nd.gov": {
+        "name": "North Dakota Legislature"
+    },
+    "legislature.ohio.gov": {
+        "name": "Ohio Legislature"
+    },
+    "oklegislature.gov": {
+        "name": "Oklahoma Legislature"
+    },
+    "oregonlegislature.gov": {
+        "name": "Oregon Legislature"
+    },
+    "palegis.us": {
+        "name": "Pennsylvania Legislature"
+    },
+    "rilegislature.gov": {
+        "name": "Rhode Island Legislature"
+    },
+    "scstatehouse.gov": {
+        "name": "South Carolina Legislature"
+    },
+    "sdlegislature.gov": {
+        "name": "South Dakota Legislature"
+    },
+    "capitol.tn.gov": {
+        "name": "Tennessee Legislature"
+    },
+    "capitol.texas.gov": {
+        "name": "Texas Legislature"
+    },
+    "le.utah.gov": {
+        "name": "Utah Legislature"
+    },
+    "legislature.vermont.gov": {
+        "name": "Vermont Legislature"
+    },
+    "vga.virginia.gov": {
+        "name": "Virginia Legislature"
+    },
+    "leg.wa.gov": {
+        "name": "Washington State Legislature"
+    },
+    "wvlegislature.gov": {
+        "name": "West Virginia Legislature"
+    },
+    "legis.wisconsin.gov": {
+        "name": "Wisconsin Legislature"
+    },
+    "wyoleg.gov": {
+        "name": "Wyoming Legislature"
+    },
+    "asfono.gov": {
+        "name": "American Samoa Legislature"
+    },
+    "guamlegislature.gov": {
+        "name": "Guam Legislature"
+    },
+    "cnmileg.net": {
+        "name": "Northern Mariana Islands Legislature"
+    },
+    "oslpr.org": {
+        "name": "Puerto Rico Legislature"
+    },
+    "legvi.org": {
+        "name": "U.S. Virgin Islands Legislature"
+    },
+    "uscode.house.gov": {
+        "name": "United States Code"
+    },
+    "law.cornell.edu": {
+        "name": "Cornell Law School"
+    },
+    "federalregister.gov": {
+        "name": "Federal Register"
+    },
+    "govtrack.us": {
+        "name": "GovTrack"
+    },
+    "govinfo.gov": {
+        "name": "GovInfo"
+    }
+}

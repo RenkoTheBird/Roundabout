@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { runClaimDetectionInBrowser } from "./claimModel.js";
-import { sourceChecker } from "../search/source-quality.js";
+import { sourceChecker, getSourceDate, getSourceName } from "../search/source-quality.js";
 import './App.css';
 
 function App() {
@@ -11,6 +11,7 @@ function App() {
   const [resultsByClaimIndex, setResultsByClaimIndex] = useState({});
   const [expandedSourceIndex, setExpandedSourceIndex] = useState(null);
   const [sourceScoresByClaimIndex, setSourceScoresByClaimIndex] = useState({});
+  const [sourceNamesByClaimIndex, setSourceNamesByClaimIndex] = useState({});
 
   useEffect(() => {
     let currentTabId = null;
@@ -126,13 +127,28 @@ function App() {
 
     let cancelled = false;
     (async () => {
-      const scores = await Promise.all(results.map((r) => sourceChecker(claim, r)));
+      const scores = await Promise.all(results.map((r) => sourceChecker(claim, r, post ?? undefined)));
       if (!cancelled) {
         setSourceScoresByClaimIndex((prev) => ({ ...prev, [selectedClaimIndex]: scores }));
       }
     })();
     return () => { cancelled = true; };
-  }, [claimsResult?.detectedClaims, selectedClaimIndex, resultsByClaimIndex]);
+  }, [claimsResult?.detectedClaims, selectedClaimIndex, resultsByClaimIndex, post]);
+
+  // Load source names from credibility.json when we have results for the selected claim
+  useEffect(() => {
+    const results = resultsByClaimIndex[selectedClaimIndex]?.results;
+    if (!results?.length) return;
+
+    let cancelled = false;
+    (async () => {
+      const names = await Promise.all(results.map((r) => getSourceName(r?.url)));
+      if (!cancelled) {
+        setSourceNamesByClaimIndex((prev) => ({ ...prev, [selectedClaimIndex]: names }));
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [selectedClaimIndex, resultsByClaimIndex]);
 
   if (!post) {
     return <div className="postFont">No post detected</div>;
@@ -226,7 +242,11 @@ function App() {
                     if (b.score == null) return -1;
                     return b.score - a.score;
                   });
-                  return items.map((item, displayIndex) => (
+                  const names = sourceNamesByClaimIndex[selectedClaimIndex] || [];
+                  return items.map((item, displayIndex) => {
+                    const sourceDate = getSourceDate(item.result);
+                    const sourceName = names[item.originalIndex] ?? null;
+                    return (
                   <li key={item.originalIndex} className="search-result-item">
                     <button
                       type="button"
@@ -235,6 +255,9 @@ function App() {
                     >
                       <span className="source-number">Source {displayIndex + 1}</span>
                       <span className="postFont search-result-title">{item.result.title ?? ""}</span>
+                      {sourceName && (
+                        <span className="source-name-label postFont">{sourceName}</span>
+                      )}
                       {(() => {
                         const score = item.score;
                         return (
@@ -246,12 +269,16 @@ function App() {
                     </button>
                     {expandedSourceIndex === item.originalIndex && (
                       <div className="search-result-details">
+                        {sourceDate != null && (
+                          <p className="postFont search-result-date">Date: {sourceDate.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" })}</p>
+                        )}
                         <a href={item.result.url} target="_blank" rel="noopener noreferrer" className="postFont search-result-url">{item.result.url ?? ""}</a>
                         <div className="postFont search-result-desc">{item.result.description ?? ""}</div>
                       </div>
                     )}
                   </li>
-                  ));
+                    );
+                  });
                 })()}
               </ul>
             )}

@@ -11,6 +11,7 @@ src/public/.env
 src/public/models
 src/public/datasets/Reviews.csv
 src/public/datasets/verifiableClaims.jsonl
+src/public/datasets/questions.json
 
 node_modules
 dist

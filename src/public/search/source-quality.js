@@ -25,6 +25,7 @@
 import { pipeline } from '@xenova/transformers';
 
 let credibilityCache = null;
+let academicCache = null;
 
 function getCredibilityUrl() {
   return typeof chrome !== 'undefined' && chrome.runtime?.getURL
@@ -42,6 +43,28 @@ async function loadCredibility() {
   }
   credibilityCache = await r.json();
   return credibilityCache;
+}
+
+function getAcademicUrl() {
+  return typeof chrome !== 'undefined' && chrome.runtime?.getURL
+    ? chrome.runtime.getURL('datasets/academicSources.json')
+    : '/datasets/academicSources.json';
+}
+
+async function loadAcademic() {
+  if (academicCache !== null) return academicCache;
+  const url = getAcademicUrl();
+  try {
+    const r = await fetch(url);
+    if (!r.ok) {
+      academicCache = {};
+      return academicCache;
+    }
+    academicCache = await r.json();
+  } catch {
+    academicCache = {};
+  }
+  return academicCache;
 }
 
 /** Extract hostname from URL for lookup in credibility.json (keys are domains, e.g. "theguardian.com"). */
@@ -66,11 +89,36 @@ export async function sourceQuality(source) {
   const url = source?.url;
   if (!url) return 25;
 
-  const data = await loadCredibility();
-  if (!data || typeof data !== 'object') return 25;
-
   const hostname = getHostname(url);
   if (!hostname) return 25;
+
+  // If URL matches an academic source exactly (keys in academicSources.json), give it credibility 42.
+  const academic = await loadAcademic();
+  if (academic && Object.prototype.hasOwnProperty.call(academic, url)) {
+    return 42;
+  }
+
+  // If the source is a social platform (Reddit, X/Twitter, Instagram), its credibility is 0.
+  const socialHosts = new Set([
+    'reddit.com',
+    'www.reddit.com',
+    'old.reddit.com',
+    'np.reddit.com',
+    'twitter.com',
+    'www.twitter.com',
+    'mobile.twitter.com',
+    'x.com',
+    'www.x.com',
+    't.co',
+    'instagram.com',
+    'www.instagram.com',
+  ]);
+  if (socialHosts.has(hostname)) {
+    return 0;
+  }
+
+  const data = await loadCredibility();
+  if (!data || typeof data !== 'object') return 25;
 
   const entry = data[hostname];
   if (entry == null || !entry.credibility) return 25;
@@ -149,14 +197,87 @@ export async function sourceSimilarity(source, claim) {
   return Math.min(50, Math.max(0, sim * 50));
 }
 
+/** Parse source date from Brave result (age: ISO 8601 string). Returns Date or null. */
+export function getSourceDate(source) {
+  const age = source?.age;
+  if (age == null || typeof age !== 'string') return null;
+  const d = new Date(age);
+  return Number.isNaN(d.getTime()) ? null : d;
+}
+
 /**
- * Total source score 0-100 (quality + similarity).
+ * Source display name from credibility.json (if present). Keys are domains; entry.name is the label.
+ * @param {string} [url]
+ * @returns {Promise<string | null>}
+ */
+export async function getSourceName(url) {
+  if (!url || typeof url !== 'string') return null;
+  const data = await loadCredibility();
+  if (!data || typeof data !== 'object') return null;
+  const hostname = getHostname(url);
+  if (!hostname) return null;
+  const entry = data[hostname];
+  return entry?.name ?? null;
+}
+
+/** Parse post createdTimestamp (ISO string or ms) to Date or null. */
+function getPostDate(post) {
+  const ts = post?.createdTimestamp;
+  if (ts == null) return null;
+  if (typeof ts === 'number') {
+    const d = new Date(ts);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+  if (typeof ts === 'string') {
+    const d = new Date(ts);
+    return Number.isNaN(d.getTime()) ? null : d;
+  }
+  return null;
+}
+
+/**
+ * Recency score 0-10. Uses max of score vs "now" and score vs "post date".
+ * Curve: 0y→10, ~0.5y→9, 1y→8, 2y→6, 5y→0 (linear interpolation). No source date → 5.
+ * @param {Date | null} sourceDate
+ * @param {Date | null} postDate
+ * @returns {number}
+ */
+function recencyScore(sourceDate, postDate) {
+  if (!sourceDate) return 5;
+
+  function scoreForYearsAway(yearsAway) {
+    if (yearsAway <= 0) return 10;
+    if (yearsAway >= 5) return 0;
+    if (yearsAway <= 4) return 10 - 2 * yearsAway;
+    return 5;
+  }
+
+  const now = Date.now();
+  const refs = [now];
+  if (postDate) refs.push(postDate.getTime());
+
+  let best = 0;
+  for (const refMs of refs) {
+    const yearsAway = Math.abs(sourceDate.getTime() - refMs) / (365.25 * 24 * 60 * 60 * 1000);
+    best = Math.max(best, scoreForYearsAway(yearsAway));
+  }
+  return Math.max(0, Math.min(10, best));
+}
+
+/**
+ * Total source score 0-100 (65% credibility + 25% title similarity + 10% recency).
  * @param {string} claim
- * @param {{ title?: string; url?: string }} source
+ * @param {{ title?: string; url?: string; age?: string }} source
+ * @param {{ createdTimestamp?: string | number }?} post - optional; used for recency vs post date
  * @returns {Promise<number>}
  */
-export async function sourceChecker(claim, source) {
+export async function sourceChecker(claim, source, post) {
   const quality = await sourceQuality(source);
   const similarity = await sourceSimilarity(source, claim);
-  return quality + similarity;
+  const sourceDate = getSourceDate(source);
+  const postDate = getPostDate(post);
+  const recPart = recencyScore(sourceDate, postDate);
+  const credPart = (quality / 50) * 65;
+  const simPart = (similarity / 50) * 25;
+  return credPart + simPart + recPart;
 }

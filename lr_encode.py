@@ -9,8 +9,10 @@ from pathlib import Path
 import numpy as np
 import onnxruntime as ort
 
-# ----- Adjustable: max samples per class (claims and reviews each) -----
-MAX_SAMPLES_PER_CLASS = 10_000
+# ----- Sample counts: claims (one class), not-a-claim from reviews + questions -----
+N_CLAIMS = 20_000
+N_REVIEWS = 10_000
+N_QUESTIONS = 10_000
 
 # Paths
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -18,6 +20,7 @@ PROJECT_ROOT = SCRIPT_DIR
 DATASETS_DIR = PROJECT_ROOT / "src" / "public" / "datasets"
 CLAIMS_PATH = DATASETS_DIR / "verifiableClaims.jsonl"
 REVIEWS_PATH = DATASETS_DIR / "Reviews.csv"
+QUESTIONS_PATH = DATASETS_DIR / "questions.json"
 MODEL_DIR = PROJECT_ROOT / "src" / "public" / "models" / "all-MiniLM-L6-v2"
 ENCODINGS_PATH = PROJECT_ROOT / "claim_encodings.npz"
 
@@ -63,6 +66,27 @@ def load_reviews(path: Path, max_samples: int | None = None) -> list[str]:
             if t:
                 texts.append(t)
     return texts
+
+
+def load_questions(path: Path, max_samples: int | None = None) -> list[str]:
+    """Load questions from SQuAD-style JSON (data[].paragraphs[].qas[].question)."""
+    with open(path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    texts = []
+    for item in data.get("data", []):
+        if max_samples is not None and len(texts) >= max_samples:
+            break
+        for para in item.get("paragraphs", []):
+            if max_samples is not None and len(texts) >= max_samples:
+                break
+            for qa in para.get("qas", []):
+                if "question" in qa:
+                    q = (qa["question"] or "").strip()
+                    if q:
+                        texts.append(q)
+                if max_samples is not None and len(texts) >= max_samples:
+                    break
+    return texts[:max_samples] if max_samples is not None else texts
 
 
 def encode_with_onnx(texts: list[str], model_dir: Path) -> np.ndarray:
@@ -121,16 +145,27 @@ def main():
         raise FileNotFoundError(f"Claims file not found: {CLAIMS_PATH}")
     if not REVIEWS_PATH.exists():
         raise FileNotFoundError(f"Reviews file not found: {REVIEWS_PATH}")
+    if not QUESTIONS_PATH.exists():
+        raise FileNotFoundError(f"Questions file not found: {QUESTIONS_PATH}")
 
-    print(f"Loading up to {MAX_SAMPLES_PER_CLASS} claims and {MAX_SAMPLES_PER_CLASS} reviews...")
-    claim_texts = load_claims(CLAIMS_PATH, max_samples=MAX_SAMPLES_PER_CLASS)
-    review_texts = load_reviews(REVIEWS_PATH, max_samples=MAX_SAMPLES_PER_CLASS)
-    print(f"  Claims: {len(claim_texts)}, Reviews: {len(review_texts)}")
+    print(f"Loading {N_CLAIMS} claims, {N_REVIEWS} reviews, {N_QUESTIONS} questions...")
+    claim_texts = load_claims(CLAIMS_PATH, max_samples=N_CLAIMS)
+    review_texts = load_reviews(REVIEWS_PATH, max_samples=N_REVIEWS)
+    question_texts = load_questions(QUESTIONS_PATH, max_samples=N_QUESTIONS)
+    print(f"  Claims: {len(claim_texts)}, Reviews: {len(review_texts)}, Questions: {len(question_texts)}")
 
-    X_raw = claim_texts + review_texts
-    y_labels = ["claim"] * len(claim_texts) + ["not a claim"] * len(review_texts)
+    # claim=0, not a claim=1 (reviews + questions)
+    X_raw = claim_texts + review_texts + question_texts
+    y_labels = (
+        ["claim"] * len(claim_texts)
+        + ["not a claim"] * len(review_texts)
+        + ["not a claim"] * len(question_texts)
+    )
     class_names = np.array(["claim", "not a claim"])
-    y = np.array([0] * len(claim_texts) + [1] * len(review_texts), dtype=np.int32)
+    y = np.array(
+        [0] * len(claim_texts) + [1] * len(review_texts) + [1] * len(question_texts),
+        dtype=np.int32,
+    )
 
     print("Encoding with MiniLM ONNX model...")
     X = encode_with_onnx(X_raw, MODEL_DIR)
