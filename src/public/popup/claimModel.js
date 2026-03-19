@@ -27,9 +27,17 @@ export async function runClaimDetectionInBrowser(clauses) {
   const weights = await getWeights();
   const coef = weights.coef?.[0];
   const intercept = weights.intercept?.[0];
+  const scalerMean = weights.scaler_mean;
+  const scalerScale = weights.scaler_scale;
   if (!coef || intercept === undefined) {
     throw new Error('Invalid weights file (missing coef/intercept).');
   }
+
+  const useScaling =
+    Array.isArray(scalerMean) &&
+    Array.isArray(scalerScale) &&
+    scalerMean.length === coef.length &&
+    scalerScale.length === coef.length;
 
   if (!extractorPromise) {
     extractorPromise = pipeline('feature-extraction', 'Xenova/all-MiniLM-L6-v2');
@@ -56,7 +64,11 @@ export async function runClaimDetectionInBrowser(clauses) {
     const emb = Array.isArray(embeddings[i]) ? embeddings[i] : embeddings.slice(i * dim, (i + 1) * dim);
     let score = intercept;
     for (let j = 0; j < coef.length; j++) {
-      score += coef[j] * (emb[j] ?? 0);
+      let x = emb[j] ?? 0;
+      if (useScaling) {
+        x = (x - scalerMean[j]) / (scalerScale[j] ?? 1);
+      }
+      score += coef[j] * x;
     }
     if (score >= 0) claims.push(clauses[i]);
   }

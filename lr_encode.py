@@ -5,14 +5,17 @@ then save encodings to a file for training.
 import json
 import csv
 from pathlib import Path
+from xml.etree import ElementTree as ET
 
 import numpy as np
 import onnxruntime as ort
 
-# ----- Sample counts: claims (one class), not-a-claim from reviews + questions -----
-N_CLAIMS = 20_000
+# ----- Sample counts: claims (one class), not-a-claim from reviews + questions + dialogue -----
+N_CLAIMS = 30_000
 N_REVIEWS = 10_000
 N_QUESTIONS = 10_000
+N_DIALOGUE_DECL = 10_000
+N_DIALOGUE_IMP = 10_000
 
 # Paths
 SCRIPT_DIR = Path(__file__).resolve().parent
@@ -21,6 +24,7 @@ DATASETS_DIR = PROJECT_ROOT / "src" / "public" / "datasets"
 CLAIMS_PATH = DATASETS_DIR / "verifiableClaims.jsonl"
 REVIEWS_PATH = DATASETS_DIR / "Reviews.csv"
 QUESTIONS_PATH = DATASETS_DIR / "questions.json"
+SPAADIA_DIR = DATASETS_DIR / "spaadia_release_v02"
 MODEL_DIR = PROJECT_ROOT / "src" / "public" / "models" / "all-MiniLM-L6-v2"
 ENCODINGS_PATH = PROJECT_ROOT / "claim_encodings.npz"
 
@@ -89,6 +93,66 @@ def load_questions(path: Path, max_samples: int | None = None) -> list[str]:
     return texts[:max_samples] if max_samples is not None else texts
 
 
+def load_spaadia_sentences(
+    dir_path: Path,
+    max_decl: int | None = None,
+    max_imp: int | None = None,
+) -> tuple[list[str], list[str]]:
+    """Load declarative and imperative sentences from the Spaadia XML dialogues.
+
+    Declaratives are identified by either a tag name ``decl`` or a ``mode``
+    attribute containing ``"decl"``. Imperatives are identified by either a
+    tag name ``imp`` or a ``mode`` attribute containing ``"imp"``.
+    Up to ``max_decl`` and ``max_imp`` samples are returned (or all available
+    if the corresponding limit is None).
+    """
+    declaratives: list[str] = []
+    imperatives: list[str] = []
+
+    if not dir_path.exists():
+        return declaratives, imperatives
+
+    for xml_path in sorted(dir_path.glob("*.xml")):
+        try:
+            tree = ET.parse(xml_path)
+        except ET.ParseError:
+            continue
+        root = tree.getroot()
+
+        for elem in root.iter():
+            mode = elem.attrib.get("mode", "")
+            tag = elem.tag
+            text_parts = list(elem.itertext())
+            text = " ".join(" ".join(text_parts).split()).strip()
+            if not text:
+                continue
+
+            added_any = False
+            if max_decl is None or len(declaratives) < max_decl:
+                if tag == "decl" or "decl" in mode:
+                    declaratives.append(text)
+                    added_any = True
+
+            if max_imp is None or len(imperatives) < max_imp:
+                if tag == "imp" or "imp" in mode:
+                    imperatives.append(text)
+                    added_any = True
+
+            if (
+                (max_decl is not None and len(declaratives) >= max_decl)
+                and (max_imp is not None and len(imperatives) >= max_imp)
+            ):
+                break
+
+        if (
+            (max_decl is not None and len(declaratives) >= max_decl)
+            and (max_imp is not None and len(imperatives) >= max_imp)
+        ):
+            break
+
+    return declaratives, imperatives
+
+
 def encode_with_onnx(texts: list[str], model_dir: Path) -> np.ndarray:
     """Encode texts using the local MiniLM ONNX model. Returns (n, 384) float32."""
     onnx_path = model_dir / "model.onnx"
@@ -148,26 +212,66 @@ def main():
     if not QUESTIONS_PATH.exists():
         raise FileNotFoundError(f"Questions file not found: {QUESTIONS_PATH}")
 
-    print(f"Loading {N_CLAIMS} claims, {N_REVIEWS} reviews, {N_QUESTIONS} questions...")
+    print(
+        f"Loading {N_CLAIMS} claims, {N_REVIEWS} reviews, "
+        f"{N_QUESTIONS} questions, {N_DIALOGUE_DECL} declaratives, "
+        f"{N_DIALOGUE_IMP} imperatives from dialogue..."
+    )
     claim_texts = load_claims(CLAIMS_PATH, max_samples=N_CLAIMS)
     review_texts = load_reviews(REVIEWS_PATH, max_samples=N_REVIEWS)
     question_texts = load_questions(QUESTIONS_PATH, max_samples=N_QUESTIONS)
-    print(f"  Claims: {len(claim_texts)}, Reviews: {len(review_texts)}, Questions: {len(question_texts)}")
+    dialogue_decl_texts, dialogue_imp_texts = load_spaadia_sentences(
+        SPAADIA_DIR,
+        max_decl=N_DIALOGUE_DECL,
+        max_imp=N_DIALOGUE_IMP,
+    )
+    print(
+        f"  Claims: {len(claim_texts)}, "
+        f"Reviews: {len(review_texts)}, "
+        f"Questions: {len(question_texts)}, "
+        f"Declaratives: {len(dialogue_decl_texts)}, "
+        f"Imperatives: {len(dialogue_imp_texts)}"
+    )
 
-    # claim=0, not a claim=1 (reviews + questions)
-    X_raw = claim_texts + review_texts + question_texts
+    # claim=0, not a claim=1 (reviews + questions + dialogue sentences)
+    X_raw = (
+        claim_texts
+        + review_texts
+        + question_texts
+        + dialogue_decl_texts
+        + dialogue_imp_texts
+    )
     y_labels = (
         ["claim"] * len(claim_texts)
         + ["not a claim"] * len(review_texts)
         + ["not a claim"] * len(question_texts)
+        + ["not a claim"] * len(dialogue_decl_texts)
+        + ["not a claim"] * len(dialogue_imp_texts)
     )
     class_names = np.array(["claim", "not a claim"])
+    # Binary labels for logistic regression:
+    #   0 = claim, 1 = not a claim (reviews + questions + dialogue)
     y = np.array(
-        [0] * len(claim_texts) + [1] * len(review_texts) + [1] * len(question_texts),
+        [0] * len(claim_texts)
+        + [1] * len(review_texts)
+        + [1] * len(question_texts)
+        + [1] * len(dialogue_decl_texts)
+        + [1] * len(dialogue_imp_texts),
         dtype=np.int32,
     )
 
     print("Encoding with MiniLM ONNX model...")
+    onnx_path = MODEL_DIR / "model.onnx"
+    tokenizer_path = MODEL_DIR / "tokenizer.json"
+    if not onnx_path.exists():
+        raise FileNotFoundError(f"ONNX model not found: {onnx_path}")
+    if not tokenizer_path.exists() or Tokenizer is None:
+        raise FileNotFoundError(
+            f"Tokenizer not found: {tokenizer_path} (and pip install tokenizers)"
+        )
+    if ENCODINGS_PATH.exists():
+        # Avoid accidentally reusing a previously generated (possibly incompatible) NPZ.
+        ENCODINGS_PATH.unlink()
     X = encode_with_onnx(X_raw, MODEL_DIR)
 
     print(f"Saving encodings to {ENCODINGS_PATH}...")

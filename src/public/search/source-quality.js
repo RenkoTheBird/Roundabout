@@ -2,19 +2,19 @@
 /*
     Metrics:
             The formula:
-            AdFontes credibility: 0 (lowest ~6) to 64 (highest ~56)
-                     bias: -42 (lowest ~-32) to 42 (highest ~32)
+            AdFontes credibility: 0 (lowest ~6) to 64 (highest ~50)
+                     bias: -42 (lowest ~-30) to 42 (highest ~30)
             MBFC credibility: 0 (best) to 10 (worst)
                 bias: -10 to 10 (0 best; take absolute value)
 
 
             step 1
-            Normalize bias: ( (abs(AdFontes Bias) * 0.238) + abs(MBFC bias) ) / 2 = average bias
+            Normalize bias: ( (abs(AdFontes Bias) * 0.333) + abs(MBFC bias) ) / 2 = average bias
             if MBFC null, skip second addition & division
             bias then equals (abs(average bias - 10)), highest score becomes 10 (best)
 
             step 2:
-            Normalize credibility: ((AdFontes * 0.15625) + abs(MBFC - 10)) / 2 = average credibility
+            Normalize credibility: ((AdFontes * 0.20) + abs(MBFC - 10)) / 2 = average credibility
             highest score becomes 10 (best)
 
             step 3:
@@ -26,6 +26,9 @@ import { pipeline } from '@xenova/transformers';
 
 let credibilityCache = null;
 let academicCache = null;
+let credibilityKeys = null;
+let credibilityKeysLower = null;
+let credibilityEntryCacheByUrl = new Map();
 
 function getCredibilityUrl() {
   return typeof chrome !== 'undefined' && chrome.runtime?.getURL
@@ -39,9 +42,15 @@ async function loadCredibility() {
   const r = await fetch(url);
   if (!r.ok) {
     credibilityCache = {};
+    credibilityKeys = [];
+    credibilityKeysLower = [];
+    credibilityEntryCacheByUrl.clear();
     return credibilityCache;
   }
   credibilityCache = await r.json();
+  credibilityKeys = Object.keys(credibilityCache || {});
+  credibilityKeysLower = credibilityKeys.map((k) => (typeof k === 'string' ? k.toLowerCase() : String(k)));
+  credibilityEntryCacheByUrl.clear();
   return credibilityCache;
 }
 
@@ -72,14 +81,85 @@ function getHostname(url) {
   if (!url || typeof url !== 'string') return '';
   try {
     const u = new URL(url);
-    return u.hostname || '';
+    return (u.hostname || '').toLowerCase();
   } catch {
+    // Some inputs may omit scheme (e.g. "www.example.com/path").
+    const cleaned = url.trim();
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(cleaned);
+    if (!hasScheme) {
+      try {
+        const u = new URL(`https://${cleaned}`);
+        return (u.hostname || '').toLowerCase();
+      } catch {
+        return '';
+      }
+    }
     return '';
   }
 }
 
+function stripWww(hostname) {
+  if (!hostname) return '';
+  return hostname.replace(/^www\./i, '');
+}
+
+function normalizeUrlForLookup(url) {
+  if (!url || typeof url !== 'string') return '';
+  return url.trim().toLowerCase();
+}
+
+async function findCredibilityEntry(url) {
+  const data = await loadCredibility();
+  if (!data || typeof data !== 'object') return null;
+
+  const urlLower = normalizeUrlForLookup(url);
+  if (!urlLower) return null;
+
+  // Cache by normalized URL string; avoids scanning all credibility keys repeatedly.
+  if (credibilityEntryCacheByUrl.has(urlLower)) {
+    return credibilityEntryCacheByUrl.get(urlLower) ?? null;
+  }
+
+  const hostnameRaw = getHostname(url);
+  const hostnameCandidates = [hostnameRaw, stripWww(hostnameRaw)].filter(Boolean);
+  // Try exact hostname matches first (most common case).
+  for (const host of hostnameCandidates) {
+    const entry = data[host];
+    if (entry && entry.credibility) {
+      credibilityEntryCacheByUrl.set(urlLower, entry);
+      return entry;
+    }
+  }
+
+  // Fall back to substring match (requested behavior).
+  // This handles cases like:
+  // - "https://www.upi.com/..." matching key "upi.com"
+  // - keys that include a path segment, like "afp.com/en"
+  let found = null;
+  for (let i = 0; i < (credibilityKeysLower?.length ?? 0); i++) {
+    const keyLower = credibilityKeysLower[i];
+    const key = credibilityKeys[i];
+    if (!keyLower || typeof key !== 'string') continue;
+
+    if (urlLower.includes(keyLower)) {
+      found = data[key];
+      break;
+    }
+    for (const host of hostnameCandidates) {
+      if (host.includes(keyLower)) {
+        found = data[key];
+        break;
+      }
+    }
+    if (found) break;
+  }
+
+  credibilityEntryCacheByUrl.set(urlLower, found);
+  return found;
+}
+
 /**
- * Source quality from credibility data (0-50). Default 25 when URL not in dataset.
+ * Source quality from credibility data (0-65). Default 32 when URL not in dataset.
  * Pulls data directly from credibility.json: keys are domains; each entry has
  * credibility.AdFontes.{ bias, credibility } and credibility.MediaBiasFactCheck.{ bias, credibility }.
  * @param {{ url?: string }} source - source object with url
@@ -87,15 +167,15 @@ function getHostname(url) {
  */
 export async function sourceQuality(source) {
   const url = source?.url;
-  if (!url) return 25;
+  if (!url) return 32;
 
   const hostname = getHostname(url);
-  if (!hostname) return 25;
+  if (!hostname) return 32;
 
-  // If URL matches an academic source exactly (keys in academicSources.json), give it credibility 42.
+  // If URL matches an academic source exactly (keys in academicSources.json), give it credibility 58.
   const academic = await loadAcademic();
   if (academic && Object.prototype.hasOwnProperty.call(academic, url)) {
-    return 42;
+    return 58;
   }
 
   // If the source is a social platform (Reddit, X/Twitter, Instagram), its credibility is 0.
@@ -113,15 +193,12 @@ export async function sourceQuality(source) {
     'instagram.com',
     'www.instagram.com',
   ]);
-  if (socialHosts.has(hostname)) {
+  if (socialHosts.has(hostname) || socialHosts.has(stripWww(hostname))) {
     return 0;
   }
 
-  const data = await loadCredibility();
-  if (!data || typeof data !== 'object') return 25;
-
-  const entry = data[hostname];
-  if (entry == null || !entry.credibility) return 25;
+  const entry = await findCredibilityEntry(url);
+  if (entry == null || !entry.credibility) return 32;
 
   const adf = entry.credibility.AdFontes;
   const mbfc = entry.credibility.MediaBiasFactCheck;
@@ -130,19 +207,19 @@ export async function sourceQuality(source) {
   const MBFCbias = mbfc && typeof mbfc.bias === 'number' ? mbfc.bias : null;
   const MBFCcred = mbfc && typeof mbfc.credibility === 'number' ? mbfc.credibility : null;
 
-  let bias = Math.abs(ADFbias) * 0.238;
+  let bias = Math.abs(ADFbias) * 0.333;
   if (MBFCbias !== null) {
     bias = (bias + Math.abs(MBFCbias)) / 2;
   }
   bias = Math.abs(bias - 10);
 
-  let cred = ADFcred * 0.15625;
+  let cred = ADFcred * 0.20;
   if (MBFCcred !== null) {
     cred = (cred + Math.abs(MBFCcred - 10)) / 2;
   }
 
-  let quality = (bias + cred) * 2.5;
-  quality = Math.min(50, Math.max(0, quality));
+  let quality = (bias + cred) * 3.25;
+  quality = Math.max(0, quality);
   return quality;
 }
 
@@ -166,7 +243,7 @@ function cosineSimilarity(a, b) {
 }
 
 /**
- * Similarity score 0-50 based on claim vs source title embedding.
+ * Similarity score 0-25 based on claim vs source title embedding.
  * @param {{ title?: string }} source
  * @param {string} claim
  * @returns {Promise<number>}
@@ -194,7 +271,7 @@ export async function sourceSimilarity(source, claim) {
   const embClaim = Array.isArray(embeddings[0]) ? embeddings[0] : embeddings.slice(0, embeddings.length / 2);
   const embTitle = Array.isArray(embeddings[1]) ? embeddings[1] : embeddings.slice(embeddings.length / 2);
   const sim = cosineSimilarity(embClaim, embTitle);
-  return Math.min(50, Math.max(0, sim * 50));
+  return Math.min(25, Math.max(0, sim * 25));
 }
 
 /** Parse source date from Brave result (age: ISO 8601 string). Returns Date or null. */
@@ -212,11 +289,7 @@ export function getSourceDate(source) {
  */
 export async function getSourceName(url) {
   if (!url || typeof url !== 'string') return null;
-  const data = await loadCredibility();
-  if (!data || typeof data !== 'object') return null;
-  const hostname = getHostname(url);
-  if (!hostname) return null;
-  const entry = data[hostname];
+  const entry = await findCredibilityEntry(url);
   return entry?.name ?? null;
 }
 
@@ -277,7 +350,5 @@ export async function sourceChecker(claim, source, post) {
   const sourceDate = getSourceDate(source);
   const postDate = getPostDate(post);
   const recPart = recencyScore(sourceDate, postDate);
-  const credPart = (quality / 50) * 65;
-  const simPart = (similarity / 50) * 25;
-  return credPart + simPart + recPart;
+  return quality + similarity + recPart;
 }

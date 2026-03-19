@@ -298,6 +298,19 @@
             },
         "name": "The Independent"
     },
+    "the-independent.com": {
+        "credibility": {
+            "AdFontes": {
+                "bias": -6.91,
+                "credibility": 38.49
+                },
+            "MediaBiasFactCheck": {
+                "bias": -3.6,
+                "credibility": 5.8
+                }
+            },
+        "name": "The Independent"
+    },
     "theverge.com": {
         "credibility": {
             "AdFontes": {
