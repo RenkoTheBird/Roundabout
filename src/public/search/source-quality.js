@@ -26,9 +26,16 @@ import { pipeline } from '@xenova/transformers';
 
 let credibilityCache = null;
 let academicCache = null;
+let govCache = null;
 let credibilityKeys = null;
 let credibilityKeysLower = null;
+let academicKeys = null;
+let academicKeysLower = null;
+let govKeys = null;
+let govKeysLower = null;
 let credibilityEntryCacheByUrl = new Map();
+let academicEntryCacheByUrl = new Map();
+let govEntryCacheByUrl = new Map();
 
 function getCredibilityUrl() {
   return typeof chrome !== 'undefined' && chrome.runtime?.getURL
@@ -67,13 +74,47 @@ async function loadAcademic() {
     const r = await fetch(url);
     if (!r.ok) {
       academicCache = {};
+      academicKeys = [];
+      academicKeysLower = [];
+      academicEntryCacheByUrl.clear();
       return academicCache;
     }
     academicCache = await r.json();
   } catch {
     academicCache = {};
   }
+  academicKeys = Object.keys(academicCache || {});
+  academicKeysLower = academicKeys.map((k) => (typeof k === 'string' ? k.toLowerCase() : String(k)));
+  academicEntryCacheByUrl.clear();
   return academicCache;
+}
+
+function getGovUrl() {
+  return typeof chrome !== 'undefined' && chrome.runtime?.getURL
+    ? chrome.runtime.getURL('datasets/govSources.json')
+    : '/datasets/govSources.json';
+}
+
+async function loadGov() {
+  if (govCache !== null) return govCache;
+  const url = getGovUrl();
+  try {
+    const r = await fetch(url);
+    if (!r.ok) {
+      govCache = {};
+      govKeys = [];
+      govKeysLower = [];
+      govEntryCacheByUrl.clear();
+      return govCache;
+    }
+    govCache = await r.json();
+  } catch {
+    govCache = {};
+  }
+  govKeys = Object.keys(govCache || {});
+  govKeysLower = govKeys.map((k) => (typeof k === 'string' ? k.toLowerCase() : String(k)));
+  govEntryCacheByUrl.clear();
+  return govCache;
 }
 
 /** Extract hostname from URL for lookup in credibility.json (keys are domains, e.g. "theguardian.com"). */
@@ -106,6 +147,54 @@ function stripWww(hostname) {
 function normalizeUrlForLookup(url) {
   if (!url || typeof url !== 'string') return '';
   return url.trim().toLowerCase();
+}
+
+function normalizeLookupKey(key) {
+  if (!key || typeof key !== 'string') return '';
+  const lowered = key.trim().toLowerCase();
+  return lowered.replace(/^[a-z][a-z0-9+.-]*:\/\//, '').replace(/^www\./, '');
+}
+
+function findEntryBySubstring(url, data, keys, keysLower, cache) {
+  if (!data || typeof data !== 'object') return null;
+
+  const urlLower = normalizeUrlForLookup(url);
+  if (!urlLower) return null;
+
+  if (cache.has(urlLower)) {
+    return cache.get(urlLower) ?? null;
+  }
+
+  const hostnameRaw = getHostname(url);
+  const hostname = stripWww(hostnameRaw);
+  const normalizedUrl = normalizeLookupKey(urlLower);
+  let found = null;
+
+  for (let i = 0; i < (keysLower?.length ?? 0); i++) {
+    const key = keys?.[i];
+    const keyLower = keysLower[i];
+    if (!keyLower || typeof key !== 'string') continue;
+
+    const normalizedKey = normalizeLookupKey(keyLower);
+    if (!normalizedKey) continue;
+
+    if (urlLower.includes(keyLower) || normalizedUrl.includes(normalizedKey)) {
+      found = data[key];
+      break;
+    }
+    if (
+      hostnameRaw === normalizedKey ||
+      hostname === normalizedKey ||
+      hostnameRaw.includes(normalizedKey) ||
+      hostname.includes(normalizedKey)
+    ) {
+      found = data[key];
+      break;
+    }
+  }
+
+  cache.set(urlLower, found);
+  return found;
 }
 
 async function findCredibilityEntry(url) {
@@ -172,9 +261,17 @@ export async function sourceQuality(source) {
   const hostname = getHostname(url);
   if (!hostname) return 32;
 
-  // If URL matches an academic source exactly (keys in academicSources.json), give it credibility 58.
+  // Government sources use max credibility bucket (65).
+  const gov = await loadGov();
+  const govEntry = findEntryBySubstring(url, gov, govKeys, govKeysLower, govEntryCacheByUrl);
+  if (govEntry) {
+    return 65;
+  }
+
+  // Academic default credibility remains 58.
   const academic = await loadAcademic();
-  if (academic && Object.prototype.hasOwnProperty.call(academic, url)) {
+  const academicEntry = findEntryBySubstring(url, academic, academicKeys, academicKeysLower, academicEntryCacheByUrl);
+  if (academicEntry) {
     return 58;
   }
 
@@ -289,6 +386,14 @@ export function getSourceDate(source) {
  */
 export async function getSourceName(url) {
   if (!url || typeof url !== 'string') return null;
+  const gov = await loadGov();
+  const govEntry = findEntryBySubstring(url, gov, govKeys, govKeysLower, govEntryCacheByUrl);
+  if (govEntry?.name) return govEntry.name;
+
+  const academic = await loadAcademic();
+  const academicEntry = findEntryBySubstring(url, academic, academicKeys, academicKeysLower, academicEntryCacheByUrl);
+  if (academicEntry?.name) return academicEntry.name;
+
   const entry = await findCredibilityEntry(url);
   return entry?.name ?? null;
 }

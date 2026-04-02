@@ -3,6 +3,7 @@
  * Weights from claim_lr_weights.json at extension root; must run lr_train.py and rebuild.
  */
 import { pipeline } from '@xenova/transformers';
+import { fetchExactitudeScores, EXACTITUDE_THRESHOLD } from '../search/exactitude.js';
 
 let extractorPromise = null;
 
@@ -19,7 +20,24 @@ async function getWeights() {
 
 /**
  * @param {string[]} clauses
- * @returns {Promise<string[]>} clauses classified as claims
+ * @returns {Promise<Array<{
+ *   clause: string,
+ *   lrScore: number,
+ *   lrIsClaim: boolean,
+ *   exactitudeTotal: number,
+ *   exactitudeBreakdown: {
+ *     quantification: number,
+ *     timeSpecificity: number,
+ *     locationScope: number,
+ *     definedTerms: number,
+ *     sourceClarity: number,
+ *     falsifiability: number
+ *   },
+ *   exactitudeSignals: Record<string, unknown>,
+ *   exactitudeThreshold: number,
+ *   nerEntities: Array<{ text: string, label: string, start?: number, end?: number }>,
+ *   isClaimFinal: boolean
+ * }>}
  */
 export async function runClaimDetectionInBrowser(clauses) {
   if (!clauses || clauses.length === 0) return [];
@@ -58,8 +76,8 @@ export async function runClaimDetectionInBrowser(clauses) {
     embeddings = Array.from(output.data ?? output);
   }
 
-  const claims = [];
   const dim = coef.length;
+  const lrPart = [];
   for (let i = 0; i < clauses.length; i++) {
     const emb = Array.isArray(embeddings[i]) ? embeddings[i] : embeddings.slice(i * dim, (i + 1) * dim);
     let score = intercept;
@@ -70,7 +88,26 @@ export async function runClaimDetectionInBrowser(clauses) {
       }
       score += coef[j] * x;
     }
-    if (score >= 0) claims.push(clauses[i]);
+    lrPart.push({ score, lrIsClaim: score >= 0 });
   }
-  return claims;
+
+  const exactitudes = await fetchExactitudeScores(clauses);
+
+  const clauseDecisions = [];
+  for (let i = 0; i < clauses.length; i++) {
+    const { score, lrIsClaim } = lrPart[i];
+    const exactitude = exactitudes[i];
+    clauseDecisions.push({
+      clause: clauses[i],
+      lrScore: score,
+      lrIsClaim,
+      exactitudeTotal: exactitude.total,
+      exactitudeBreakdown: exactitude.breakdown,
+      exactitudeSignals: exactitude.signals,
+      exactitudeThreshold: EXACTITUDE_THRESHOLD,
+      nerEntities: exactitude.nerEntities ?? [],
+      isClaimFinal: lrIsClaim && exactitude.total >= EXACTITUDE_THRESHOLD,
+    });
+  }
+  return clauseDecisions;
 }

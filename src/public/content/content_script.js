@@ -1,3 +1,4 @@
+globalThis.__ROUNDABOUT_CONTENT_SCRIPT_LOADED__ = true;
 console.log("Content script loaded!", location.href, location.hostname);
 
 // Track our URL changes

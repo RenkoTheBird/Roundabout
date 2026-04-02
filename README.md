@@ -12,6 +12,7 @@ This extension was made with React+Vite for the Spring 2026 CAHSI LREU program.
 
 This extension uses the following datasets:
 
+```
 Claims list:
 @inproceedings{Thorne18Fever,
     author = {Thorne, James and Vlachos, Andreas and Christodoulopoulos, Christos and Mittal, Arpit},
@@ -19,6 +20,7 @@ Claims list:
     booktitle = {NAACL-HLT},
     year = {2018}
 }
+```
 
 Opinions list (reviews):
 The "Reviews" dataset by Jyoti Kushwaha at https://www.kaggle.com/datasets/jyotikushwaha545/reviews on Kaggle.
@@ -28,3 +30,9 @@ SQuAD Dataset (Stanford Question Answering Dataset); found at https://rajpurkar.
 
 This extension uses the following ML models:
 - all-MiniLM-L6-v2 for sentence transformation
+- `Xenova/bert-base-NER` (via `@xenova/transformers`) for on-device named-entity signals used in Exactitude
+
+## Exactitude (pure extension, no API key)
+
+Claim gating uses a **logistic-regression “claim” classifier in the browser** (MiniLM via `@xenova/transformers`) plus an **Exactitude** score. Exactitude is **fully in-browser**: **token-classification NER** (`Xenova/bert-base-NER`, ONNX loaded from the Hugging Face model hub on first use—no token required) plus **compromise** for noun phrases (`#Adjective? #Noun+`), modals (`#Modal`), and term-level checks, together with the same numeric/date/attribution heuristics as before. The six dimensions (A–F) and total out of 12 are unchanged: quantification, time specificity, location scope, defined terms, source clarity, and falsifiability.
+
