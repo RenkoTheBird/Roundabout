@@ -1,7 +1,8 @@
 /**
  * Exactitude scores: all in-browser — @xenova/transformers (token-classification NER)
- * plus compromise for noun phrases, modals, and term-level checks. Same six metrics
- * (A–F), total /12, as before.
+ * plus compromise for noun phrases, modals, and term-level checks. Seven sub-metrics
+ * (A–G); A–F each 0..2, G (personal relativity) 0 or negative (−1/−2). Total /12,
+ * clamped to [0, 12] after summing (G subtracts from A–F).
  *
  * Exactitude component mapping used by the popup:
  *   A = quantification
@@ -10,12 +11,13 @@
  *   D = definedTerms
  *   E = sourceClarity
  *   F = falsifiability (testable claims; equality/comparison counts toward high score)
+ *   G = personalRelativity (first-person / inclusive + experiential phrasing; ≤0)
  */
 
 import nlp from "compromise";
 
 export const EXACTITUDE_THRESHOLD = 6;
-export const EXACTITUDE_VERSION = "browser-xenova-compromise-1.0.0";
+export const EXACTITUDE_VERSION = "browser-xenova-compromise-1.1.2";
 
 /** Small NER model (ONNX); first run downloads from Hugging Face CDN (no API key). */
 const NER_MODEL_ID = "Xenova/bert-base-NER";
@@ -145,6 +147,43 @@ const _STOPWORDS = new Set([
   "those",
   "it",
   "its",
+]);
+
+/** Spelled-out cardinals / scales for definition-clarity heuristic when compromise is unavailable. */
+const _CARDINAL_WORDS = new Set([
+  "zero",
+  "one",
+  "two",
+  "three",
+  "four",
+  "five",
+  "six",
+  "seven",
+  "eight",
+  "nine",
+  "ten",
+  "eleven",
+  "twelve",
+  "thirteen",
+  "fourteen",
+  "fifteen",
+  "sixteen",
+  "seventeen",
+  "eighteen",
+  "nineteen",
+  "twenty",
+  "thirty",
+  "forty",
+  "fifty",
+  "sixty",
+  "seventy",
+  "eighty",
+  "ninety",
+  "hundred",
+  "thousand",
+  "million",
+  "billion",
+  "trillion",
 ]);
 
 function clamp(n, lo = 0, hi = 2) {
@@ -550,6 +589,29 @@ function isQualifyingAdvAdjNounTerms(terms) {
   );
 }
 
+/**
+ * Leading token is a quantity (digits or number words), not a determiner mis-tagged as Value.
+ * @param {string[]} tags
+ */
+function isNumberLikeLeadingTerm(tags) {
+  if (!tags || tags.length === 0) return false;
+  if (tags.includes("Determiner")) return false;
+  return (
+    tags.includes("NumericValue") ||
+    tags.includes("TextValue") ||
+    tags.includes("Multiple") ||
+    tags.includes("Fraction")
+  );
+}
+
+function isQualifyingValueNounTerms(terms) {
+  if (terms.length < 2) return false;
+  const firstTags = terms[0].tags || [];
+  const lastTags = terms[terms.length - 1].tags || [];
+  if (!lastTags.includes("Noun")) return false;
+  return isNumberLikeLeadingTerm(firstTags);
+}
+
 function scoreChunkFromTerms(terms, kind) {
   const n = terms.length;
   const chunkText = terms.map((t) => t.text).join(" ");
@@ -588,7 +650,9 @@ function scoreDefinitionClarityHeuristic(text, signals, nerEnts) {
     const run = words.slice(i, j);
     const n = run.length;
     const chunkText = run.join(" ");
-    const hasNum = run.some((w) => /\d/.test(w));
+    const hasDigit = run.some((w) => /\d/.test(w));
+    const hasLeadingCardinalWord = n >= 2 && _CARDINAL_WORDS.has(run[0]);
+    const hasNum = hasDigit || hasLeadingCardinalWord;
     const hasLong = run.some((w) => w.length >= 8);
     const entityOverlap =
       phraseOverlapsDefiningEntity(chunkText, nerEnts) && n >= 2;
@@ -618,6 +682,7 @@ function scoreDefinitionClarityHeuristic(text, signals, nerEnts) {
 /**
  * Defined terms: noun phrases that look like definitional language — strict
  * adjective+noun, adverb+noun, adverb+adjective+noun, proper-noun+head, acronym+noun,
+ * number-led noun phrases (e.g. "3 dogs", "69 million people", "four ships"),
  * or multi-noun phrase with a named-entity anchor (NER). Avoids loose #Adjective? #Noun+.
  */
 function scoreDefinitionClarityCompromise(doc, signals, nerEnts) {
@@ -656,6 +721,14 @@ function scoreDefinitionClarityCompromise(doc, signals, nerEnts) {
   }
   for (const phrase of doc.match("#Acronym #Noun").json()) {
     pushPhrase(phrase, "acronymNoun");
+  }
+  for (const phrase of doc.match("#NumericValue #Value* #Noun").json()) {
+    pushPhrase(phrase, "numericNoun");
+  }
+  for (const phrase of doc.match("#Value #Noun").json()) {
+    const terms = phrase.terms ?? [];
+    if (!isQualifyingValueNounTerms(terms)) continue;
+    pushPhrase(phrase, "valueNoun");
   }
   for (const phrase of doc.match("#Noun #Noun+").json()) {
     const t = phrase.text || "";
@@ -806,6 +879,95 @@ function scoreFalsifiability(text, nerEnts, signals, doc) {
   return 0;
 }
 
+/** Curly apostrophe → ASCII for consistent contraction matching. */
+function normalizeApostrophesForPronouns(text) {
+  return (text || "").replace(/\u2019/g, "'");
+}
+
+/**
+ * First-person singular + inclusive plural only (not you/he/she/they).
+ * Each pattern is tested on apostrophe-normalized text.
+ */
+const _FIRST_PERSON_PRONOUN_CHECKS = [
+  { id: "I", re: /\bI\b/i },
+  { id: "me", re: /\bme\b/i },
+  { id: "my", re: /\bmy\b/i },
+  { id: "mine", re: /\bmine\b/i },
+  { id: "myself", re: /\bmyself\b/i },
+  { id: "we", re: /\bwe\b/i },
+  { id: "our", re: /\bour\b/i },
+  { id: "ours", re: /\bours\b/i },
+  { id: "ourselves", re: /\bourselves\b/i },
+  { id: "I'm", re: /\bI['']m\b/i },
+  { id: "I've", re: /\bI['']ve\b/i },
+  { id: "I'll", re: /\bI['']ll\b/i },
+  { id: "I'd", re: /\bI['']d\b/i },
+  { id: "we're", re: /\bwe['']re\b/i },
+  { id: "we've", re: /\bwe['']ve\b/i },
+  { id: "we'll", re: /\bwe['']ll\b/i },
+  { id: "we'd", re: /\bwe['']d\b/i },
+];
+
+/**
+ * "us" pronoun vs acronym US (e.g. "US inflation") — /\bus\b/i falsely matches the latter.
+ * @param {string} normalized apostrophe-normalized text
+ */
+function hasUsPronounNotAcronym(normalized) {
+  const re = /\bus\b/gi;
+  let m;
+  while ((m = re.exec(normalized)) !== null) {
+    if (m[0] !== "US") return true;
+  }
+  return false;
+}
+
+/** Lowercase phrases checked after apostrophe normalization (substring match). */
+const _EXPERIENTIAL_PHRASES = [
+  "my time",
+  "i'm back",
+  "i am back",
+  "we're back",
+  "we are back",
+  "my last",
+  "my trip",
+  "my visit",
+  "my experience",
+  "i went",
+  "i came",
+  "i saw",
+  "i remember",
+];
+
+/**
+ * G: personal relativity — penalizes first-person / inclusive experiential wording (0, −1, or −2).
+ * @param {string} text
+ * @param {Record<string, unknown>} signals
+ * @returns {0 | -1 | -2}
+ */
+function scorePersonalRelativity(text, signals) {
+  const normalized = normalizeApostrophesForPronouns(text);
+  const pronounHits = [];
+  for (const { id, re } of _FIRST_PERSON_PRONOUN_CHECKS) {
+    if (re.test(normalized)) pronounHits.push(id);
+  }
+  if (hasUsPronounNotAcronym(normalized)) pronounHits.push("us");
+  const lower = normalized.toLowerCase();
+  const experientialHits = [];
+  for (const phrase of _EXPERIENTIAL_PHRASES) {
+    if (lower.includes(phrase)) experientialHits.push(phrase);
+  }
+  let value = 0;
+  if (pronounHits.length) {
+    value = experientialHits.length ? -2 : -1;
+  }
+  signals.personalRelativity = {
+    pronounHits,
+    experientialHits,
+    value,
+  };
+  return value;
+}
+
 /**
  * @param {string} text
  * @param {unknown} nerRaw
@@ -814,13 +976,15 @@ function scoreFalsifiability(text, nerEnts, signals, doc) {
 export function scoreSentenceFromNer(text, nerRaw, doc) {
   const nerEnts = normalizeNerResponse(nerRaw);
   const signals = {};
-  // A–F component scores (each 0..2, total clamped to 0..12):
+  // A–F component scores (each 0..2); G (personalRelativity) is 0, −1, or −2.
+  // Total = sum(A..G) clamped to 0..12.
   // A: quantification  -> numbers, percentages, money, quantities
   // B: timeSpecificity -> explicit dates/times or weaker temporal wording
   // C: locationScope   -> geographic/organizational scope entities
   // D: definedTerms    -> concrete noun-phrase definition clarity
   // E: sourceClarity   -> attribution phrases and source/org mentions
   // F: falsifiability  -> testable phrasing; equality/comparison boosts score (vs modal/subjective)
+  // G: personalRelativity -> first-person/inclusive + optional experiential phrasing (penalty)
   const breakdown = {
     quantification: clamp(scoreQuantification(text, nerEnts, signals)),
     timeSpecificity: clamp(scoreTime(text, nerEnts, signals)),
@@ -828,6 +992,7 @@ export function scoreSentenceFromNer(text, nerRaw, doc) {
     definedTerms: clamp(scoreDefinitionClarity(text, signals, doc, nerEnts)),
     sourceClarity: clamp(scoreSource(text, nerEnts, signals)),
     falsifiability: clamp(scoreFalsifiability(text, nerEnts, signals, doc)),
+    personalRelativity: scorePersonalRelativity(text, signals),
   };
   let total = Object.values(breakdown).reduce((a, b) => a + b, 0);
   total = Math.max(0, Math.min(12, total));

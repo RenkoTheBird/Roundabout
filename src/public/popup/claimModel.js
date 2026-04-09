@@ -31,7 +31,8 @@ async function getWeights() {
  *     locationScope: number,
  *     definedTerms: number,
  *     sourceClarity: number,
- *     falsifiability: number
+ *     falsifiability: number,
+ *     personalRelativity: number (0, -1, or -2)
  *   },
  *   exactitudeSignals: Record<string, unknown>,
  *   exactitudeThreshold: number,

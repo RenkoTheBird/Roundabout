@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { runClaimDetectionInBrowser } from "./claimModel.js";
 import { sourceChecker, getSourceDate, getSourceName } from "../search/source-quality.js";
+import { EXACTITUDE_THRESHOLD } from "../search/exactitude.js";
 import './App.css';
 
 function platformLabel(platform) {
@@ -26,6 +27,7 @@ function App() {
   const [sourceScoresByClaimIndex, setSourceScoresByClaimIndex] = useState({});
   const [sourceNamesByClaimIndex, setSourceNamesByClaimIndex] = useState({});
   const [debugOpen, setDebugOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const [debugTab, setDebugTab] = useState("post");
 
   useEffect(() => {
@@ -176,6 +178,7 @@ function App() {
 
   return (
     <div className="popup-shell">
+      {helpOpen && <HelpPanel />}
       {debugOpen && (
         <DebugPanel
           post={post}
@@ -191,14 +194,30 @@ function App() {
       <header className="popup-header">
         <span className="popup-header__brand">Roundabout</span>
         <span className="popup-header__site">{platformLabel(post?.platform)}</span>
-        <button
-          type="button"
-          className="popup-header__debug"
-          onClick={() => setDebugOpen((v) => !v)}
-          aria-expanded={debugOpen}
-        >
-          Debug
-        </button>
+        <div className="popup-header__actions">
+          <button
+            type="button"
+            className="popup-header__secondary-btn"
+            onClick={() => {
+              setHelpOpen((v) => !v);
+              if (!helpOpen) setDebugOpen(false);
+            }}
+            aria-expanded={helpOpen}
+          >
+            Help
+          </button>
+          <button
+            type="button"
+            className="popup-header__secondary-btn"
+            onClick={() => {
+              setDebugOpen((v) => !v);
+              if (!debugOpen) setHelpOpen(false);
+            }}
+            aria-expanded={debugOpen}
+          >
+            Debug
+          </button>
+        </div>
       </header>
 
       <main className="popup-main">
@@ -228,19 +247,6 @@ function App() {
                             onClick={() => setSelectedClaimIndex(i)}
                           >
                             <div className="claim-row-main">{claim.clause}</div>
-                            <div className="claim-row-metrics claim-row-metrics--accent">
-                              Exactitude: {claim.exactitudeTotal}/12
-                              {" | "}
-                              A:{claim.exactitudeBreakdown.quantification}
-                              {" B:"}{claim.exactitudeBreakdown.timeSpecificity}
-                              {" C:"}{claim.exactitudeBreakdown.locationScope}
-                              {" D:"}{claim.exactitudeBreakdown.definedTerms}
-                              {" E:"}{claim.exactitudeBreakdown.sourceClarity}
-                              {" F:"}{claim.exactitudeBreakdown.falsifiability}
-                              {" | "}
-                              LR: {claim.lrScore.toFixed(2)}
-                            </div>
-                            <NerEntitiesLine entities={claim.nerEntities} />
                           </button>
                         </li>
                       ))}
@@ -324,6 +330,87 @@ function App() {
           </>
         )}
       </main>
+    </div>
+  );
+}
+
+function HelpPanel() {
+  return (
+    <div className="help-panel" role="region" aria-label="Help: scores and detection">
+      <h2 className="help-panel__title ui-font">About scores &amp; detection</h2>
+      <div className="help-panel__scroll bodyFont">
+        <section className="help-section">
+          <h3 className="help-section__title ui-font">Exactitude</h3>
+          <p>
+            Exactitude measures how concrete and checkable a sentence is. Sub-scores <strong>A</strong> through{" "}
+            <strong>F</strong> each range from 0 to 2. A seventh component, <strong>G</strong> (personal relativity),
+            only reduces the total when the wording is personal or experiential. Everything is summed and capped so the
+            total stays between 0 and 12. A sentence is only listed as a <strong>claim</strong> here if its Exactitude
+            is at least {EXACTITUDE_THRESHOLD} <em>and</em> the LR step below agrees it is claim-like.
+          </p>
+        </section>
+        <section className="help-section">
+          <h3 className="help-section__title ui-font">Exactitude sub-metrics (A–F)</h3>
+          <dl className="help-dl">
+            <dt className="help-dt">A — Quantification</dt>
+            <dd className="help-dd">
+              Numbers, money, percentages, amounts, and comparison language (e.g. “more than”, “the same as”) make a
+              statement easier to verify or pin down.
+            </dd>
+            <dt className="help-dt">B — Time specificity</dt>
+            <dd className="help-dd">
+              Explicit dates or clock times score highest; looser words like “recently” or “today” add a weaker signal.
+            </dd>
+            <dt className="help-dt">C — Location scope</dt>
+            <dd className="help-dd">
+              Places, facilities, and organizations that anchor where something applies.
+            </dd>
+            <dt className="help-dt">D — Defined terms</dt>
+            <dd className="help-dd">
+              How clearly the sentence identifies what is being discussed (concrete noun phrases rather than vague
+              wording).
+            </dd>
+            <dt className="help-dt">E — Source clarity</dt>
+            <dd className="help-dd">
+              Phrases that attribute information (“according to…”, “published by…”) and clear references to sources.
+            </dd>
+            <dt className="help-dt">F — Falsifiability</dt>
+            <dd className="help-dd">
+              Whether the phrasing could be checked or argued against. Heavy use of modals (“might”, “could”) or
+              subjective hedges (“I think”, “probably”) lowers this score; factual verb use with concrete anchors raises
+              it.
+            </dd>
+          </dl>
+          <p className="help-section__note">
+            <strong>G</strong> (personal relativity) appears in Debug together with A–F; it penalizes first-person and
+            similar framing. Numeric breakdowns for each sentence are under <strong>Debug → Exactitude / LR</strong>.
+          </p>
+        </section>
+        <section className="help-section">
+          <h3 className="help-section__title ui-font">LR and the LR score</h3>
+          <p>
+            <strong>LR</strong> means <strong>logistic regression</strong>. Each sentence is converted to a numeric
+            vector using a small on-device language model (MiniLM). A trained model turns that vector into an{" "}
+            <strong>LR score</strong> (a real number, not limited to 0–1). If the score is{" "}
+            <strong>zero or positive</strong>, the extension treats the sentence as claim-like at this step. The final
+            claim list uses{" "}
+            <strong>both</strong> this LR decision and Exactitude (see above).
+          </p>
+        </section>
+        <section className="help-section">
+          <h3 className="help-section__title ui-font">NER</h3>
+          <p>
+            <strong>NER</strong> is <strong>named entity recognition</strong>: an on-device model labels spans of text
+            (people, places, dates, amounts, etc.). You may see labels such as{" "}
+            <strong>PER</strong> (person), <strong>ORG</strong> (organization), <strong>GPE</strong>,{" "}
+            <strong>LOC</strong>, and <strong>FAC</strong> (locations and facilities), <strong>DATE</strong> and{" "}
+            <strong>TIME</strong>,{" "}
+            <strong>MONEY</strong>, <strong>PERCENT</strong>, <strong>QUANTITY</strong>, <strong>CARDINAL</strong>,{" "}
+            <strong>MISC</strong>, and <strong>WORK_OF_ART</strong>. Roundabout feeds these signals into Exactitude. The
+            exact entities found for each sentence are shown under <strong>Debug → Exactitude / LR</strong>.
+          </p>
+        </section>
+      </div>
     </div>
   );
 }
@@ -423,6 +510,7 @@ function DebugPanel({
                       {" D:"}{dec.exactitudeBreakdown.definedTerms}
                       {" E:"}{dec.exactitudeBreakdown.sourceClarity}
                       {" F:"}{dec.exactitudeBreakdown.falsifiability}
+                      {" G:"}{dec.exactitudeBreakdown.personalRelativity ?? 0}
                       {" | "}
                       LR: {dec.lrScore.toFixed(2)}
                       {" | "}

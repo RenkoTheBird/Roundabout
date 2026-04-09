@@ -24,6 +24,15 @@ const fixtures = [
       "people in alberta pay the exact same federal tax rates that people in quebec pay.",
     minTotal: 8,
   },
+  {
+    sentence: "I agree with the published figures.",
+    expectPersonalRelativity: -1,
+  },
+  {
+    sentence:
+      "They were confused about why I'm back in Billund almost a year after my last day trip here, for 5-6 hours.",
+    expectPersonalRelativity: -2,
+  },
 ];
 
 const data = await fetchExactitudeScores(fixtures.map((f) => f.sentence));
@@ -34,9 +43,16 @@ data.forEach((r, i) => {
   let ok = true;
   if (f.minTotal != null && r.total < f.minTotal) ok = false;
   if (f.maxTotal != null && r.total > f.maxTotal) ok = false;
+  if (
+    f.expectPersonalRelativity != null &&
+    r.breakdown?.personalRelativity !== f.expectPersonalRelativity
+  ) {
+    ok = false;
+  }
   if (!ok) failed += 1;
+  const g = r.breakdown?.personalRelativity ?? "?";
   console.log(
-    `${ok ? "PASS" : "FAIL"} | total=${r.total} | ${f.sentence.slice(0, 60)}...`
+    `${ok ? "PASS" : "FAIL"} | total=${r.total} G=${g} | ${f.sentence.slice(0, 60)}...`
   );
 });
 
