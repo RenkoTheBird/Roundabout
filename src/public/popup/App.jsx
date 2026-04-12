@@ -345,8 +345,8 @@ function HelpPanel() {
             Exactitude measures how concrete and checkable a sentence is. Sub-scores <strong>A</strong> through{" "}
             <strong>F</strong> each range from 0 to 2. A seventh component, <strong>G</strong> (personal relativity),
             only reduces the total when the wording is personal or experiential. Everything is summed and capped so the
-            total stays between 0 and 12. A sentence is only listed as a <strong>claim</strong> here if its Exactitude
-            is at least {EXACTITUDE_THRESHOLD} <em>and</em> the LR step below agrees it is claim-like.
+            total stays between 0 and 12. A sentence is listed as a <strong>claim</strong> here when its Exactitude
+            total is at least {EXACTITUDE_THRESHOLD}.
           </p>
         </section>
         <section className="help-section">
@@ -383,18 +383,7 @@ function HelpPanel() {
           </dl>
           <p className="help-section__note">
             <strong>G</strong> (personal relativity) appears in Debug together with A–F; it penalizes first-person and
-            similar framing. Numeric breakdowns for each sentence are under <strong>Debug → Exactitude / LR</strong>.
-          </p>
-        </section>
-        <section className="help-section">
-          <h3 className="help-section__title ui-font">LR and the LR score</h3>
-          <p>
-            <strong>LR</strong> means <strong>logistic regression</strong>. Each sentence is converted to a numeric
-            vector using a small on-device language model (MiniLM). A trained model turns that vector into an{" "}
-            <strong>LR score</strong> (a real number, not limited to 0–1). If the score is{" "}
-            <strong>zero or positive</strong>, the extension treats the sentence as claim-like at this step. The final
-            claim list uses{" "}
-            <strong>both</strong> this LR decision and Exactitude (see above).
+            similar framing. Numeric breakdowns for each sentence are under <strong>Debug → Exactitude</strong>.
           </p>
         </section>
         <section className="help-section">
@@ -407,7 +396,7 @@ function HelpPanel() {
             <strong>TIME</strong>,{" "}
             <strong>MONEY</strong>, <strong>PERCENT</strong>, <strong>QUANTITY</strong>, <strong>CARDINAL</strong>,{" "}
             <strong>MISC</strong>, and <strong>WORK_OF_ART</strong>. Roundabout feeds these signals into Exactitude. The
-            exact entities found for each sentence are shown under <strong>Debug → Exactitude / LR</strong>.
+            exact entities found for each sentence are shown under <strong>Debug → Exactitude</strong>.
           </p>
         </section>
       </div>
@@ -452,7 +441,7 @@ function DebugPanel({
           className={`debug-tab ${debugTab === "scores" ? "debug-tab--active" : ""}`}
           onClick={() => setDebugTab("scores")}
         >
-          Exactitude / LR
+          Exactitude
         </button>
       </div>
       <div className="debug-tab-content">
@@ -511,8 +500,6 @@ function DebugPanel({
                       {" E:"}{dec.exactitudeBreakdown.sourceClarity}
                       {" F:"}{dec.exactitudeBreakdown.falsifiability}
                       {" G:"}{dec.exactitudeBreakdown.personalRelativity ?? 0}
-                      {" | "}
-                      LR: {dec.lrScore.toFixed(2)}
                       {" | "}
                       Claim: {dec.isClaimFinal ? "yes" : "no"}
                     </div>

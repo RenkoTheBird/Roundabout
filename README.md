@@ -10,29 +10,11 @@ Reliability and exactitude are not objective, but we seek to do the best we can 
 
 This extension was made with React+Vite for the Spring 2026 CAHSI LREU program.
 
-This extension uses the following datasets:
-
-```
-Claims list:
-@inproceedings{Thorne18Fever,
-    author = {Thorne, James and Vlachos, Andreas and Christodoulopoulos, Christos and Mittal, Arpit},
-    title = {{FEVER}: a Large-scale Dataset for Fact Extraction and {VERification}},
-    booktitle = {NAACL-HLT},
-    year = {2018}
-}
-```
-
-Opinions list (reviews):
-The "Reviews" dataset by Jyoti Kushwaha at https://www.kaggle.com/datasets/jyotikushwaha545/reviews on Kaggle.
-
-Questions list:
-SQuAD Dataset (Stanford Question Answering Dataset); found at https://rajpurkar.github.io/SQuAD-explorer/
-
 This extension uses the following ML models:
-- all-MiniLM-L6-v2 for sentence transformation
+- all-MiniLM-L6-v2 for sentence embeddings when scoring source articles for relevance
 - `Xenova/bert-base-NER` (via `@xenova/transformers`) for on-device named-entity signals used in Exactitude
 
-## Exactitude (pure extension, no API key)
+## Exactitude (runs in browser)
 
-Claim gating uses a **logistic-regression “claim” classifier in the browser** (MiniLM via `@xenova/transformers`) plus an **Exactitude** score. Exactitude is **fully in-browser**: **token-classification NER** (`Xenova/bert-base-NER`, ONNX loaded from the Hugging Face model hub on first use—no token required) plus **compromise** for noun phrases (`#Adjective? #Noun+`), modals (`#Modal`), and term-level checks, together with the same numeric/date/attribution heuristics as before. The six dimensions (A–F) and total out of 12 are unchanged: quantification, time specificity, location scope, defined terms, source clarity, and falsifiability.
+**Claim detection** is determined by the **Exactitude** score only. Exactitude is **fully in-browser**: **token-classification NER** (`Xenova/bert-base-NER`, ONNX loaded in-browser) plus **compromise** for noun phrases (`#Adjective? #Noun+`), modals (`#Modal`), and term-level checks, together with numeric/date/attribution heuristics. The seven dimensions (A–G) and total out of 12 are: quantification, time specificity, location scope, defined terms, source clarity, falsifiability, (each worth 0, 1, or 2), and personal relativity (a penalty of max 2). The threshold is set to 6 to count as a claim, and thus be searched by the extension.
 

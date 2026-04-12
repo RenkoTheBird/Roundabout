@@ -1,5 +1,5 @@
-// Use binary LR classifier to detect if claim or not
-// Split post into sentences via Intl.Segmenter, then run claim detection on each sentence.
+// Sentence splitting for claim detection: clauses are scored in the popup with Exactitude.
+// Split post into sentences via Intl.Segmenter, then the popup runs detection on each sentence.
 
 /** Segmenter instance for sentence splitting (locale-aware). */
 const sentenceSegmenter = new Intl.Segmenter("en", { granularity: "sentence" });

@@ -10,14 +10,15 @@
  *   C = locationScope
  *   D = definedTerms
  *   E = sourceClarity
- *   F = falsifiability (testable claims; equality/comparison counts toward high score)
+ *   F = falsifiability (testable claims; equality/comparison or definitive universal
+ *       phrasing counts toward high score)
  *   G = personalRelativity (first-person / inclusive + experiential phrasing; ≤0)
  */
 
 import nlp from "compromise";
 
 export const EXACTITUDE_THRESHOLD = 6;
-export const EXACTITUDE_VERSION = "browser-xenova-compromise-1.1.2";
+export const EXACTITUDE_VERSION = "browser-xenova-compromise-1.1.5";
 
 /** Small NER model (ONNX); first run downloads from Hugging Face CDN (no API key). */
 const NER_MODEL_ID = "Xenova/bert-base-NER";
@@ -192,6 +193,99 @@ function clamp(n, lo = 0, hi = 2) {
 
 function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function lemmaLike(w) {
+  return w.replace(/[^a-z]/gi, "").toLowerCase();
+}
+
+/**
+ * Quantity modifiers (often with units: dose, fold, blind) — quantification + defined-terms nummod cue.
+ */
+const _QUANTITY_MODIFIER_LEMMAS = new Set([
+  "single",
+  "double",
+  "triple",
+  "quadruple",
+  "quintuple",
+  "twice",
+  "thrice",
+  "once",
+  "multiply",
+  "multiplies",
+  "multiplying",
+  "multiplied",
+  "multiple",
+  "dual",
+  "pair",
+  "pairs",
+]);
+
+/** Definitive / universal claim adverbs — strengthen falsifiability (testable absolutes). */
+const _DEFINITIVE_CLAIM_LEMMAS = new Set([
+  "completely",
+  "complete",
+  "fully",
+  "full",
+  "wholly",
+  "whole",
+  "entirely",
+  "entire",
+  "totally",
+  "total",
+  "utterly",
+  "always",
+  "never",
+  "invariably",
+  "necessarily",
+  "necessary",
+  "exclusively",
+  "exclusive",
+  "solely",
+  "sole",
+  "absolutely",
+  "absolute",
+]);
+
+const _QUANTITY_MODIFIER_RE =
+  /\b(?:single|double|triple|quadruple|quintuple|twice|thrice|once|multiply|multiplies|multiplying|multiplied|multiple|dual|pair|pairs)\b/gi;
+
+/**
+ * @returns {{ matches: string[], hasAny: boolean }}
+ */
+function detectQuantityModifierLanguage(text) {
+  const matches = [];
+  const r = new RegExp(_QUANTITY_MODIFIER_RE.source, "gi");
+  let m;
+  while ((m = r.exec(text)) !== null) {
+    matches.push(m[0]);
+  }
+  const uniq = [...new Set(matches.map((x) => x.toLowerCase()))];
+  return { matches: uniq, hasAny: uniq.length > 0 };
+}
+
+/**
+ * @returns {{ hits: string[], hasAny: boolean }}
+ */
+function detectDefinitiveClaimLanguage(text, doc) {
+  const hits = [];
+  const pushLemma = (raw) => {
+    const lem = lemmaLike(raw);
+    if (lem && _DEFINITIVE_CLAIM_LEMMAS.has(lem)) hits.push(lem);
+  };
+  if (doc) {
+    for (const row of doc.terms().json()) {
+      for (const t of row.terms ?? []) {
+        pushLemma(t.normal || t.text || "");
+      }
+    }
+  } else {
+    for (const raw of text.split(/\s+/)) {
+      pushLemma(raw);
+    }
+  }
+  const uniq = [...new Set(hits)];
+  return { hits: uniq, hasAny: uniq.length > 0 };
 }
 
 /**
@@ -431,6 +525,7 @@ function hasPercentWord(text) {
 
 function scoreQuantification(text, nerEnts, signals) {
   const comp = detectComparisonLanguage(text);
+  const qtyMod = detectQuantityModifierLanguage(text);
   const moneyFromRegex = extractMoneyLikeEntities(text);
   const moneyLabels = new Set(["PERCENT", "MONEY", "QUANTITY", "CARDINAL"]);
   const ents = [
@@ -450,6 +545,8 @@ function scoreQuantification(text, nerEnts, signals) {
     comparisonMatches: comp.matches,
     comparisonStrong: comp.hasStrong,
     comparisonAny: comp.hasAny,
+    quantityModifierMatches: qtyMod.matches,
+    quantityModifierAny: qtyMod.hasAny,
   };
 
   const hasMoneyOrPercentEnt = ents.some((e) =>
@@ -458,13 +555,21 @@ function scoreQuantification(text, nerEnts, signals) {
   const strong =
     ents.length >= 2 ||
     (hasMoneyOrPercentEnt && (numericTokens >= 1 || hp || hpw)) ||
-    comp.hasStrong;
+    comp.hasStrong ||
+    (qtyMod.hasAny &&
+      (numericTokens >= 1 ||
+        hp ||
+        hpw ||
+        ents.length >= 1 ||
+        comp.hasAny ||
+        comp.hasStrong));
   const medium =
     ents.length >= 1 ||
     numericTokens >= 1 ||
     hp ||
     hpw ||
-    comp.hasAny;
+    comp.hasAny ||
+    qtyMod.hasAny;
   if (strong) return 2;
   if (medium) return 1;
   return 0;
@@ -475,6 +580,36 @@ const _MONTH_RE =
 const _DATE_LIKE =
   /\b(?:\d{1,2}[/-]\d{1,2}[/-]\d{2,4}|\d{4}-\d{2}-\d{2}|(?:19|20)\d{2})\b/;
 
+/**
+ * Scientific / superscript exponentials: 10^78, 10⁷⁸, 1.2e+34 (not plain "2024").
+ * Used for time-scale specificity and defined-term numeric chunks.
+ */
+const _SCI_EXPONENT_OR_NOTATION_RE =
+  /10(?:\^[-+]?\d+|[⁰¹²³⁴⁵⁶⁷⁸⁹]+)|(?:[+-]?(?:\d+\.?\d*|\.\d+))[eE][+-]?\d+/;
+
+/** "10⁷⁸ years" / "10^78 years" / "1e78 years" — exponent + duration unit. */
+const _SCI_YEARS_DURATION_RE = new RegExp(
+  `(?:${_SCI_EXPONENT_OR_NOTATION_RE.source})\\s*,?\\s*years?`,
+  "i",
+);
+
+/** Ordinary cardinal + years (e.g. "in 50 years") — explicit duration. */
+const _PLAIN_NUMBER_YEARS_RE = /\b\d+(?:\.\d+)?\s+years?\b/i;
+
+const _YEARS_WORD_RE = /\byears?\b/i;
+
+/**
+ * @returns {{ sciExponentMatch: boolean, sciYearsPhrase: boolean, plainNumberYears: boolean, yearsWord: boolean }}
+ */
+function detectTimeScaleSignals(text) {
+  return {
+    sciExponentMatch: _SCI_EXPONENT_OR_NOTATION_RE.test(text),
+    sciYearsPhrase: _SCI_YEARS_DURATION_RE.test(text),
+    plainNumberYears: _PLAIN_NUMBER_YEARS_RE.test(text),
+    yearsWord: _YEARS_WORD_RE.test(text),
+  };
+}
+
 function scoreTime(text, nerEnts, signals) {
   const dates = nerEnts.filter((e) => e.label === "DATE");
   const dateTexts = dates.map((e) => e.text);
@@ -483,14 +618,30 @@ function scoreTime(text, nerEnts, signals) {
     regexDates.push("regex-date");
   }
   const times = nerEnts.filter((e) => e.label === "TIME");
+  const scale = detectTimeScaleSignals(text);
   signals.timeSpecificity = {
     dates: dateTexts.length ? dateTexts : regexDates,
     times: times.map((e) => e.text),
+    sciExponentMatch: scale.sciExponentMatch,
+    sciYearsPhrase: scale.sciYearsPhrase,
+    plainNumberYears: scale.plainNumberYears,
+    yearsWord: scale.yearsWord,
   };
-  if (dates.length || times.length || regexDates.length) return 2;
+  if (
+    dates.length ||
+    times.length ||
+    regexDates.length ||
+    scale.sciYearsPhrase ||
+    scale.plainNumberYears
+  ) {
+    return 2;
+  }
   const lower = text.toLowerCase();
   const words = lower.split(/\s+/);
   if (words.some((w) => _WEAK_TIME_ADV.has(w.replace(/[^a-z]/gi, "")))) {
+    return 1;
+  }
+  if (scale.yearsWord || scale.sciExponentMatch) {
     return 1;
   }
   return 0;
@@ -591,9 +742,15 @@ function isQualifyingAdvAdjNounTerms(terms) {
 
 /**
  * Leading token is a quantity (digits or number words), not a determiner mis-tagged as Value.
+ * Optional leading term allows quantity-modifier lemmas (e.g. "single dose").
  * @param {string[]} tags
+ * @param {{ normal?: string, text?: string } | undefined} leadingTerm
  */
-function isNumberLikeLeadingTerm(tags) {
+function isNumberLikeLeadingTerm(tags, leadingTerm) {
+  if (leadingTerm) {
+    const lem = lemmaLike(leadingTerm.normal || leadingTerm.text || "");
+    if (lem && _QUANTITY_MODIFIER_LEMMAS.has(lem)) return true;
+  }
   if (!tags || tags.length === 0) return false;
   if (tags.includes("Determiner")) return false;
   return (
@@ -609,7 +766,7 @@ function isQualifyingValueNounTerms(terms) {
   const firstTags = terms[0].tags || [];
   const lastTags = terms[terms.length - 1].tags || [];
   if (!lastTags.includes("Noun")) return false;
-  return isNumberLikeLeadingTerm(firstTags);
+  return isNumberLikeLeadingTerm(firstTags, terms[0]);
 }
 
 function scoreChunkFromTerms(terms, kind) {
@@ -618,8 +775,16 @@ function scoreChunkFromTerms(terms, kind) {
   const tagStr = (terms.map((t) => (t.tags || []).join(" ")) || []).join(" ").toLowerCase();
   const hasAmod = tagStr.includes("adjective");
   const hasCompound = terms.length >= 2;
+  const hasQtyLemma = terms.some((t) => {
+    const lem = lemmaLike(t.normal || t.text || "");
+    return lem && _QUANTITY_MODIFIER_LEMMAS.has(lem);
+  });
+  const hasSciNumericHint = _SCI_EXPONENT_OR_NOTATION_RE.test(chunkText);
   const hasNummod =
-    tagStr.includes("value") || tagStr.includes("cardinal");
+    hasQtyLemma ||
+    hasSciNumericHint ||
+    tagStr.includes("value") ||
+    tagStr.includes("cardinal");
   let score = 0;
   if (n >= 3 || (n >= 2 && (hasAmod || hasCompound || hasNummod))) score = 2;
   else if (n >= 2) score = 1;
@@ -639,6 +804,20 @@ function scoreDefinitionClarityHeuristic(text, signals, nerEnts) {
   const words = tokenizeWords(text);
   let best = 0;
   const chunkDetails = [];
+  const sciYearsMatch = text.match(_SCI_YEARS_DURATION_RE);
+  if (sciYearsMatch) {
+    const span = sciYearsMatch[0].trim();
+    chunkDetails.push({
+      text: span,
+      tokenCount: 2,
+      hasAmod: false,
+      hasCompound: true,
+      hasNummod: true,
+      hasQuantityModifier: false,
+      kind: "sciExponentYears",
+    });
+    best = 2;
+  }
   let i = 0;
   while (i < words.length) {
     if (_STOPWORDS.has(words[i])) {
@@ -652,7 +831,8 @@ function scoreDefinitionClarityHeuristic(text, signals, nerEnts) {
     const chunkText = run.join(" ");
     const hasDigit = run.some((w) => /\d/.test(w));
     const hasLeadingCardinalWord = n >= 2 && _CARDINAL_WORDS.has(run[0]);
-    const hasNum = hasDigit || hasLeadingCardinalWord;
+    const hasQtyMod = run.some((w) => _QUANTITY_MODIFIER_LEMMAS.has(w));
+    const hasNum = hasDigit || hasLeadingCardinalWord || hasQtyMod;
     const hasLong = run.some((w) => w.length >= 8);
     const entityOverlap =
       phraseOverlapsDefiningEntity(chunkText, nerEnts) && n >= 2;
@@ -662,6 +842,7 @@ function scoreDefinitionClarityHeuristic(text, signals, nerEnts) {
       hasAmod: hasLong,
       hasCompound: n >= 2,
       hasNummod: hasNum,
+      hasQuantityModifier: hasQtyMod,
     });
     let local = 0;
     if (n >= 2 && (hasNum || hasLong || entityOverlap)) local = 2;
@@ -685,10 +866,14 @@ function scoreDefinitionClarityHeuristic(text, signals, nerEnts) {
  * number-led noun phrases (e.g. "3 dogs", "69 million people", "four ships"),
  * or multi-noun phrase with a named-entity anchor (NER). Avoids loose #Adjective? #Noun+.
  */
-function scoreDefinitionClarityCompromise(doc, signals, nerEnts) {
+function scoreDefinitionClarityCompromise(doc, signals, nerEnts, fullText) {
   const seen = new Set();
   const chunkDetails = [];
   let best = 0;
+  const rawText =
+    (typeof fullText === "string" && fullText) ||
+    (typeof doc.text === "function" ? doc.text() : "") ||
+    "";
 
   function pushPhrase(phrase, kind) {
     const terms = phrase.terms ?? [];
@@ -736,6 +921,24 @@ function scoreDefinitionClarityCompromise(doc, signals, nerEnts) {
     pushPhrase(phrase, "nerCompound");
   }
 
+  const sciYearsMatch = rawText.match(_SCI_YEARS_DURATION_RE);
+  if (
+    sciYearsMatch &&
+    !chunkDetails.some((c) => _SCI_YEARS_DURATION_RE.test((c.text || "").trim()))
+  ) {
+    const span = sciYearsMatch[0].trim();
+    chunkDetails.push({
+      text: span,
+      tokenCount: 2,
+      hasAmod: false,
+      hasCompound: true,
+      hasNummod: true,
+      kind: "sciExponentYears",
+      score: 2,
+    });
+    best = Math.max(best, 2);
+  }
+
   if (!chunkDetails.length) {
     signals.definitionClarity = { chunks: [], bestChunkScore: 0, source: "compromise" };
     return 0;
@@ -750,7 +953,7 @@ function scoreDefinitionClarityCompromise(doc, signals, nerEnts) {
 
 function scoreDefinitionClarity(text, signals, doc, nerEnts) {
   if (doc) {
-    return scoreDefinitionClarityCompromise(doc, signals, nerEnts);
+    return scoreDefinitionClarityCompromise(doc, signals, nerEnts, text);
   }
   return scoreDefinitionClarityHeuristic(text, signals, nerEnts);
 }
@@ -788,14 +991,49 @@ function scoreSource(text, nerEnts, signals) {
 }
 
 const _FINITE_VERB_RE =
-  /\b(?:is|are|was|were|am|been|being|have|has|had|do|does|did|pay|pays|paid|rise|rose|risen|fall|fell|fallen|increase|decreased|say|says|said|show|shows|showed|found|find|report|reports|reported|remain|remains|stood|stand|goes|went|come|came)\b/i;
+  /\b(?:is|are|was|were|am|been|being|have|has|had|do|does|did|pay|pays|paid|rise|rose|risen|fall|fell|fallen|increase|decreased|say|says|said|show|shows|showed|found|find|report|reports|reported|remain|remains|stood|stand|goes|went|come|came|eradicate|eradicates|eradicated|eliminate|eliminates|eliminated)\b/i;
 
-function lemmaLike(w) {
-  return w.replace(/[^a-z]/gi, "").toLowerCase();
+/**
+ * Proper noun / acronym subject + will — testable prediction (not hedging "might");
+ * excludes bare pronoun/expletive subjects (There will, It will, …).
+ */
+const _ACTOR_WILL_RE =
+  /\b(?!(?:There|It|They|We|You|I|He|She|This|That|These|Those)\b)(?:[A-Z][a-zA-Z']+(?:\s+[A-Z][a-zA-Z']+){0,4}|[A-Z]\.(?:[A-Z]\.)+)\s+will\b/;
+
+/** Proper / acronym subject + past "did" — reportable act. */
+const _ACTOR_DID_RE =
+  /\b(?:[A-Z][a-zA-Z']+(?:\s+[A-Z][a-zA-Z']+){0,4}|[A-Z]\.(?:[A-Z]\.)+)\s+did\b/;
+
+/**
+ * Quote / speech attribution: named actor + speech verb (provably sourced or not).
+ * Optional leading "The" for titles (The White House says).
+ */
+const _SPEECH_ATTRIBUTION_RE =
+  /\b(?:The\s+)?(?:[A-Z][a-zA-Z']+(?:\s+[A-Z][a-zA-Z']+){0,4}|[A-Z]\.(?:[A-Z]\.)+)\s+(?:says|said|saying|states|stated|announces?|told|writes|wrote|claims|reports|reported)\b/;
+
+/**
+ * @returns {{ hasActorWill: boolean, hasActorDid: boolean, hasSpeechAttribution: boolean }}
+ */
+function detectReportClaimStructures(text) {
+  return {
+    hasActorWill: _ACTOR_WILL_RE.test(text),
+    hasActorDid: _ACTOR_DID_RE.test(text),
+    hasSpeechAttribution: _SPEECH_ATTRIBUTION_RE.test(text),
+  };
+}
+
+/**
+ * "U.S. will …" is a falsifiable prediction, not epistemic hedging — drop will from modal tally.
+ */
+function filterModalsAllowingActorWill(text, modals) {
+  if (!modals.includes("will")) return modals;
+  if (_ACTOR_WILL_RE.test(text)) return modals.filter((m) => m !== "will");
+  return modals;
 }
 
 function scoreFalsifiability(text, nerEnts, signals, doc) {
   const comp = detectComparisonLanguage(text);
+  const definitive = detectDefinitiveClaimLanguage(text, doc);
   let modals = [];
   let subjectiveHits = [];
 
@@ -839,6 +1077,10 @@ function scoreFalsifiability(text, nerEnts, signals, doc) {
     }
   }
 
+  modals = filterModalsAllowingActorWill(text, modals);
+
+  const reportClaim = detectReportClaimStructures(text);
+
   const anchorLabels = new Set([
     "DATE",
     "TIME",
@@ -871,10 +1113,25 @@ function scoreFalsifiability(text, nerEnts, signals, doc) {
     finiteVerbCount: finiteVerbs,
     equalityOrComparison: comp.hasAny,
     equalityOrComparisonStrong: comp.hasStrong,
+    definitiveClaimHits: definitive.hits,
+    definitiveClaimAny: definitive.hasAny,
+    reportSpeechAttribution: reportClaim.hasSpeechAttribution,
+    reportActorWill: reportClaim.hasActorWill,
+    reportActorDid: reportClaim.hasActorDid,
   };
 
+  const reportClaimSignal =
+    reportClaim.hasSpeechAttribution ||
+    reportClaim.hasActorWill ||
+    reportClaim.hasActorDid;
+
   if (modals.length || subjectiveHits.length) return 0;
-  if (finiteVerbs && (hasAnchor || comp.hasAny)) return 2;
+  if (
+    finiteVerbs &&
+    (hasAnchor || comp.hasAny || definitive.hasAny || reportClaimSignal)
+  ) {
+    return 2;
+  }
   if (finiteVerbs) return 1;
   return 0;
 }
